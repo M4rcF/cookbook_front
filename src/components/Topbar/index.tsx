@@ -25,12 +25,17 @@ export default function Topbar({ isSidebarExpanded }: TopbarProps) {
         <span className={styles.logoText}>Cookbook</span>
       </div>
       <div className={styles.userSection}>
-        <img
-          src="https://via.placeholder.com/40"
-          alt="User"
-          className={styles.userImage}
+        <div
+          style={{
+            width: 40,
+            height: 40,
+            backgroundColor: "#98fb98",
+            borderRadius: 50,
+            textAlign: 'center'
+          }}
           onClick={toggleMenu}
-        />
+          className={`${isSidebarExpanded ? styles.profile : "" }`}
+        >M</div>
         {menuOpen && (
           <div className={styles.menuDropdown}>
             <button onClick={openModal} className={styles.menuButton}><Edit size={16} /> Editar Perfil</button>

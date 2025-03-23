@@ -1,0 +1,28 @@
+.container {
+  form, .results {
+    background-color: white;
+    padding: 20px;
+    margin: 30px;
+  }
+
+  form {
+    .submitButton {
+      display: flex;
+      justify-content: end;
+      font-size: 13px;
+    }
+  }
+
+  .results {
+    .informations {
+      display: flex;
+      font-size: 13px;
+    }
+
+    img {
+      width: 250px;
+      height: 250px;
+      margin-right: 15px;
+    }
+  }
+}

@@ -11,6 +11,12 @@
       margin-top: 84px;
       background-color: #eef3f5;
       height: 100%;
+
+      & > h2 {
+        text-align: start;
+        margin-left: 20px;
+        font-family: 'Courier New', Courier, monospace;
+      }
     }
   }
 }

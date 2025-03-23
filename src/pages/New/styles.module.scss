@@ -1,0 +1,11 @@
+.container form{
+  background-color: white;
+  padding: 20px;
+  margin: 30px;
+
+  .submitButton {
+    display: flex;
+    justify-content: end;
+    font-size: 13px;
+  }
+}

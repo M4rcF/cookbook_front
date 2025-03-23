@@ -26,7 +26,7 @@ export default function Sidebar({ setIsSidebarExpanded }: SidebarProps) {
       >
         <div className={styles.header}>
           <button onClick={toggleSidebar} className={styles.button}>
-            { expanded ? <X size={24} /> : <Menu size={24} /> }
+            { expanded ? <X size={24} color="#000000"/> : <Menu size={24} color="#000000"/> }
           </button>
         </div>
         {expanded && (
@@ -41,9 +41,9 @@ export default function Sidebar({ setIsSidebarExpanded }: SidebarProps) {
                 <FaUtensils /> Minhas receitas
               </span>
               <ul className={styles.submenu}>
-                <li className={styles.submenuItem}><Link to="/recipes/create">Cadastrar receita</Link></li>
-                <li className={styles.submenuItem}><Link to="/recipes/edit">Editar receita</Link></li>
-                <li className={styles.submenuItem}><Link to="/recipes/import">Avaliações e Comentários</Link></li>
+                <li className={styles.submenuItem}><Link to="/new">Cadastrar receita</Link></li>
+                <li className={styles.submenuItem}><Link to="/search">Procurar receita</Link></li>
+                <li className={styles.submenuItem}><Link to="/recipe_list">Minhas receitas</Link></li>
               </ul>
             </li>
             <li className={styles.menuItem}>
@@ -51,8 +51,8 @@ export default function Sidebar({ setIsSidebarExpanded }: SidebarProps) {
                 <MdContactSupport /> Suporte
               </span>
               <ul className={styles.submenu}>
-                <li className={styles.submenuItem}><Link to="/contact">Caixa de Sugestões</Link></li>
-                <li className={styles.submenuItem}><Link to="/contact">Fale conosco</Link></li>
+                <li className={styles.submenuItem}><Link to="/faq">Faq</Link></li>
+                <li className={styles.submenuItem}><Link to="/suggestion_box">Caixa de Sugestões</Link></li>
               </ul>
             </li>
           </ul>
