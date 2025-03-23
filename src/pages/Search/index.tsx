@@ -6,6 +6,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { Button, Grid } from '@mui/material';
 import InputText from '../../components/InputText/index.tsx';
 import Select from '../../components/Select/index.tsx';
+import Pagination from '../../components/Pagination/index.tsx';
 
 export default function Search() {
   const { control, handleSubmit } = useForm();
@@ -18,27 +19,50 @@ export default function Search() {
     try {
       let meals: any = [];
 
+      console.log('form.category', form.category);
+
       if (form.name) {
         const res = await axios.get(`https://www.themealdb.com/api/json/v1/1/search.php?s=${form.name}`);
+        meals = res.data.meals.filter((meal) => {
+          const matchCategory = form.category !== undefined ? meal.strCategory === form.category : true;
+          const matchArea = form.origin !== undefined ? meal.strArea === form.origin : true;
+  
+          return matchCategory && matchArea;
+        });
+      } else if (form.ingredient) {
+        const res = await axios.get(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${form.ingredient}`);
+        meals = res.data.meals.filter((meal) => {
+          const matchCategory = form.category !== undefined ? meal.strCategory === form.category : true;
+          const matchArea = form.origin !== undefined ? meal.strArea === form.origin : true;
+  
+          return matchCategory && matchArea;
+        });
+      } else if (form.category) {
+        const res = await axios.get(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${form.category}`);
+        meals = res.data.meals.filter((meal) => {
+          const matchArea = form.origin !== undefined ? meal.strArea === form.origin : true;
+  
+          return matchArea;
+        });
+      } else if (form.origin) {
+        const res = await axios.get(`https://www.themealdb.com/api/json/v1/1/filter.php?a=${form.origin}`);
         meals = res.data.meals || [];
       }
 
-      const filtered = meals.filter((meal) => {
-        console.log('origin', form.origin);
-        console.log('strArea', meal.strArea);
-        console.log('category', form.category);
-
-        const matchCategory = form.category !== undefined ? meal.strCategory === form.category : true;
-        const matchArea = form.origin !== undefined ? meal.strArea === form.area : true;
-        return matchCategory && matchArea;
-      });
-
-
-      setResults(filtered);
-    } catch {
-
+      setResults(meals);
+    } catch (err){
+      console.error("Erro ao buscar receitas:", err);
     }
   }
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 2;
+
+  const paginatedResults = results.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
 
   const getIngredients = (meal) => {
     const ingredients: any = [];
@@ -156,9 +180,15 @@ export default function Search() {
           </Grid>
         </Grid>
       </form>
+      <Pagination
+        currentPage={currentPage}
+        totalItems={results.length}
+        itemsPerPage={itemsPerPage}
+        onPageChange={(page) => setCurrentPage(page)}
+      />
       {results.length > 0 && (
         <div className={styles.results}>
-          {results.map((meal) => (
+          {paginatedResults.map((meal) => (
             <>
               <div key={meal.idMeal} className={styles.informations}>
                 {meal.strMealThumb && (
