@@ -1,5 +1,6 @@
-import { useState } from "react";
-import styles from "./styles.module.scss";
+import React from 'react';
+import { useState } from 'react';
+import styles from './styles.module.scss';
 
 const faqData = [
   {
@@ -33,7 +34,7 @@ export default function FAQ() {
 
   return (
     <div className={styles.container}>
-      <h1>Perguntas Frequentes (FAQ)</h1>
+      <h2>Perguntas Frequentes (FAQ)</h2>
       <div className={styles.faqList}>
         {faqData.map((item, index) => (
           <div key={index} className={styles.faqItem}>
