@@ -52,7 +52,6 @@ export default function Sidebar({ setIsSidebarExpanded }: SidebarProps) {
               </span>
               <ul className={styles.submenu}>
                 <li className={styles.submenuItem}><Link to="/faq">Faq</Link></li>
-                <li className={styles.submenuItem}><Link to="/suggestion_box">Caixa de Sugestões</Link></li>
               </ul>
             </li>
           </ul>

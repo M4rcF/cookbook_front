@@ -8,39 +8,86 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 9999;
+  padding: 16px;
 }
 
 .modal {
   background: white;
-  padding: 20px;
-  border-radius: 8px;
-  width: 400px;
-  max-height: 80vh;
+  padding: 24px;
+  border-radius: 12px;
+  max-width: 900px;
+  width: 100%;
+  max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  position: relative;
+  display: flex;
+  gap: 24px;
+  flex-direction: row;
+  align-items: flex-start;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.imageContainer {
+  flex: 0 0 250px;
+
+  img {
+    width: 100%;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+}
+
+.info {
+  flex: 1;
+  font-size: 14px;
+
+  p {
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+
+  h4 {
+    margin-top: 16px;
+    margin-bottom: 8px;
+    font-size: 16px;
+  }
+
+  ul {
+    padding-left: 20px;
+    list-style: disc;
+
+    li {
+      margin-bottom: 6px;
+    }
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h2 {
+    font-size: 20px;
+    margin: 0;
+  }
 }
 
 .closeButton {
   background: none;
   border: none;
-  font-size: 20px;
-  position: absolute;
-  right: 10px;
-  top: 10px;
+  font-size: 24px;
   cursor: pointer;
-}
+  color: #555;
+  transition: color 0.2s;
 
-h2 {
-  text-align: center;
-}
-
-img {
-  width: 100%;
-  border-radius: 6px;
-  margin-bottom: 12px;
-}
-
-ul {
-  padding-left: 20px;
-  list-style: disc;
+  &:hover {
+    color: #e74c3c;
+  }
 }

@@ -6,7 +6,6 @@ import New from "./pages/New/index.tsx";
 import Search from "./pages/Search/index.tsx";
 import RecipeList from "./pages/RecipeList/index.tsx";
 import Faq from "./pages/Faq/index.tsx";
-import SuggestionBox from "./pages/SuggestionBox/index.tsx";
 import Layout from "./components/Layout/index.tsx";
 
 function App() {
@@ -22,7 +21,6 @@ function App() {
           <Route path="/search" element={<Search />} />
           <Route path="/recipe_list" element={<RecipeList />} />
           <Route path="/faq" element={<Faq />} />
-          <Route path="/suggestion_box" element={<SuggestionBox />} />
         </Routes>
       </Layout>
     </Router>
