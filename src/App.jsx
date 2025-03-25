@@ -8,6 +8,8 @@ import RecipeList from "./pages/RecipeList/index.tsx";
 import Faq from "./pages/Faq/index.tsx";
 import Layout from "./components/Layout/index.tsx";
 import "./styles/global.scss";
+import Login from "./pages/Auth/login.tsx";
+import Register from "./pages/Auth/register.tsx";
 
 function App() {
 
@@ -22,6 +24,8 @@ function App() {
           <Route path="/search" element={<Search />} />
           <Route path="/recipe_list" element={<RecipeList />} />
           <Route path="/faq" element={<Faq />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </Layout>
     </Router>

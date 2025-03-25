@@ -5,6 +5,7 @@ import RecipeDetailsModal from "../../components/RecipeDetailsModal/index.tsx";
 import RecipeEditModal from "../../components/RecipeEditModal/index.tsx";
 import Pagination from "../../components/Pagination/index.tsx";
 import { RiInformation2Line, RiEdit2Line } from "react-icons/ri";
+import { MdDeleteOutline } from "react-icons/md";
 import { Grid, Button } from "@mui/material";
 
 // Simulação de receitas do usuário logado
@@ -59,14 +60,25 @@ export default function RecipeList() {
                   >
                     Detalhes
                   </Button>
-                  <Button
-                    variant="contained"
-                    size="small"
-                    onClick={() => setEditRecipe(recipe)}
-                    startIcon={<RiEdit2Line />}
-                  >
-                    Editar
-                  </Button>
+                  <div className={styles.actionButtons}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      onClick={() => setEditRecipe(recipe)}
+                      startIcon={<RiEdit2Line />}
+                    >
+                      Editar
+                    </Button>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="error"
+                      onClick={() => setEditRecipe(recipe)}
+                      startIcon={<MdDeleteOutline />}
+                    >
+                      Excluir
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
