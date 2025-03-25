@@ -7,10 +7,10 @@
   .ingredientRow {
     display: flex;
     margin-bottom: 10px;
+    gap: 40px;
 
     div {
-      width: 281px;
-      margin-right: 10px;
+      max-width: 260px;
 
       input {
         background-color: #EFEFEF;

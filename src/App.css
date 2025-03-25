@@ -28,6 +28,14 @@
   color: #61dafb;
 }
 
+input, textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

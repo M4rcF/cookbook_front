@@ -7,6 +7,7 @@ import Search from "./pages/Search/index.tsx";
 import RecipeList from "./pages/RecipeList/index.tsx";
 import Faq from "./pages/Faq/index.tsx";
 import Layout from "./components/Layout/index.tsx";
+import "./styles/global.scss";
 
 function App() {
 

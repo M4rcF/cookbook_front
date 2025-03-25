@@ -1,116 +1,92 @@
-import { useEffect, useState } from "react";
+import React from 'react';
+import { useState } from "react";
 import styles from "./styles.module.scss";
-import RecipeFormModal from "../../components/RecipeFormModal/index.tsx";
+import RecipeDetailsModal from "../../components/RecipeDetailsModal/index.tsx";
+import RecipeEditModal from "../../components/RecipeEditModal/index.tsx";
+import Pagination from "../../components/Pagination/index.tsx";
+import { RiInformation2Line, RiEdit2Line } from "react-icons/ri";
+import { Grid, Button } from "@mui/material";
+
+// Simulação de receitas do usuário logado
+const fakeUserRecipes = [
+  {
+    strMeal: "Bolo de Cenoura",
+    strMealThumb: "https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg",
+    strCategory: "Dessert",
+    strArea: "Brazilian",
+    strInstructions: "Misture cenoura, ovos, óleo, depois adicione farinha, açúcar e fermento. Asse por 40 min.",
+    ingredients: [
+      { name: "Cenoura", measure: "2" },
+      { name: "Ovo", measure: "3" },
+      { name: "Óleo", measure: "1/2 xícara" },
+      { name: "Farinha", measure: "2 xícaras" },
+      { name: "Açúcar", measure: "1 xícara" },
+      { name: "Fermento", measure: "1 colher de sopa" }
+    ]
+  },
+  // ...outras receitas
+];
 
 export default function RecipeList() {
-  const [recipes, setRecipes] = useState([]);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
-  const [commentsModalOpen, setCommentsModalOpen] = useState(false);
-  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [editRecipe, setEditRecipe] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
 
-  useEffect(() => {
-    const storedRecipes = JSON.parse(localStorage.getItem("userRecipes")) || [];
-    const storedPrivacy = JSON.parse(localStorage.getItem("recipePrivacy")) || {};
-
-    const updatedRecipes = storedRecipes.map(recipe => ({
-      ...recipe,
-      isPublic: storedPrivacy[recipe.strMeal] ?? true,
-    }));
-
-    setRecipes(updatedRecipes);
-  }, []);
-
-  const togglePrivacy = (recipeName) => {
-    setRecipes(prevRecipes => {
-      const updatedRecipes = prevRecipes.map(recipe =>
-        recipe.strMeal === recipeName ? { ...recipe, isPublic: !recipe.isPublic } : recipe
-      );
-
-      const updatedPrivacy = updatedRecipes.reduce((acc, recipe) => {
-        acc[recipe.strMeal] = recipe.isPublic;
-        return acc;
-      }, {});
-      localStorage.setItem("recipePrivacy", JSON.stringify(updatedPrivacy));
-
-      return updatedRecipes;
-    });
-  };
-
-  const openCommentsModal = (recipe) => {
-    setSelectedRecipe(recipe);
-    setCommentsModalOpen(true);
-  };
-
-  const openEditModal = (recipe) => {
-    setSelectedRecipe(recipe);
-    setEditModalOpen(true);
-  };
-
-  const saveEditedRecipe = (updatedRecipe) => {
-    const updatedRecipes = recipes.map(r => 
-      r.strMeal === updatedRecipe.strMeal ? updatedRecipe : r
-    );
-    setRecipes(updatedRecipes);
-    localStorage.setItem("userRecipes", JSON.stringify(updatedRecipes));
-  };
+  const paginatedRecipes = fakeUserRecipes.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   return (
     <div className={styles.container}>
-      <h1>Minhas Receitas</h1>
-      {recipes.length === 0 ? (
-        <p className={styles.empty}>Nenhuma receita cadastrada.</p>
-      ) : (
-        <table className={styles.recipeTable}>
-          <thead>
-            <tr>
-              <th>Nome</th>
-              <th>Categoria</th>
-              <th>Origem</th>
-              <th>Privacidade</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            {recipes.map((recipe, index) => (
-              <tr key={index}>
-                <td>{recipe.strMeal}</td>
-                <td>{recipe.strCategory}</td>
-                <td>{recipe.strArea}</td>
-                <td>
-                  <label className={styles.switch}>
-                    <input
-                      type="checkbox"
-                      checked={recipe.isPublic}
-                      onChange={() => togglePrivacy(recipe.strMeal)}
-                    />
-                    <span className={styles.slider}></span>
-                  </label>
-                </td>
-                <td>
-                  <button onClick={() => openCommentsModal(recipe)}>Ver Comentários</button>
-                  <button onClick={() => openEditModal(recipe)}>Editar</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <h2>Minhas Receitas</h2>
+
+      <Grid container spacing={2}>
+        {paginatedRecipes.map((recipe, i) => (
+          <Grid item xs={12} sm={6} md={4} key={i}>
+            <div className={styles.card}>
+              <img src={recipe.strMealThumb} alt={recipe.strMeal} />
+              <div className={styles.cardContent}>
+                <h3>{recipe.strMeal}</h3>
+                <p className={styles.category}>{recipe.strCategory} • {recipe.strArea}</p>
+                <div className={styles.cardButtons}>
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    onClick={() => setSelectedRecipe(recipe)}
+                    startIcon={<RiInformation2Line />}
+                  >
+                    Detalhes
+                  </Button>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    onClick={() => setEditRecipe(recipe)}
+                    startIcon={<RiEdit2Line />}
+                  >
+                    Editar
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </Grid>
+        ))}
+      </Grid>
+
+      <Pagination
+        currentPage={currentPage}
+        totalItems={fakeUserRecipes.length}
+        itemsPerPage={itemsPerPage}
+        onPageChange={(page) => setCurrentPage(page)}
+      />
+
+      {selectedRecipe && (
+        <RecipeDetailsModal recipe={selectedRecipe} onClose={() => setSelectedRecipe(null)} />
       )}
 
-      {commentsModalOpen && (
-        <RecipeFormModal
-          recipe={selectedRecipe}
-          type="comments"
-          onClose={() => setCommentsModalOpen(false)}
-        />
-      )}
-
-      {editModalOpen && (
-        <RecipeFormModal
-          recipe={selectedRecipe}
-          type="edit"
-          onClose={() => setEditModalOpen(false)}
-          onSave={saveEditedRecipe}
-        />
+      {editRecipe && (
+        <RecipeEditModal recipe={editRecipe} onClose={() => setEditRecipe(null)} onSave={() => {}} />
       )}
     </div>
   );

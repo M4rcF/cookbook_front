@@ -1,7 +1,7 @@
 .container {
   width: 100%;
   margin: 0 auto;
-  padding: 24px;
+  padding: 24px 0;
 
   h2 {
     margin-bottom: 16px;
@@ -10,7 +10,7 @@
   .recipeGrid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 0.2fr));
-    margin: 20px 0 20px 0;
+    margin: 20px 0 20px 30px;
     gap: 16px;
   }
 
