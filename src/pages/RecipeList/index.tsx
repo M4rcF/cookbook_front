@@ -1,105 +1,121 @@
-import React from 'react';
-import { useState } from "react";
-import styles from "./styles.module.scss";
-import RecipeDetailsModal from "../../components/RecipeDetailsModal/index.tsx";
-import RecipeEditModal from "../../components/RecipeEditModal/index.tsx";
-import Pagination from "../../components/Pagination/index.tsx";
-import { RiInformation2Line, RiEdit2Line } from "react-icons/ri";
-import { MdDeleteOutline } from "react-icons/md";
-import { Grid, Button } from "@mui/material";
-
-// Simulação de receitas do usuário logado
-const fakeUserRecipes = [
-  {
-    strMeal: "Bolo de Cenoura",
-    strMealThumb: "https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg",
-    strCategory: "Dessert",
-    strArea: "Brazilian",
-    strInstructions: "Misture cenoura, ovos, óleo, depois adicione farinha, açúcar e fermento. Asse por 40 min.",
-    ingredients: [
-      { name: "Cenoura", measure: "2" },
-      { name: "Ovo", measure: "3" },
-      { name: "Óleo", measure: "1/2 xícara" },
-      { name: "Farinha", measure: "2 xícaras" },
-      { name: "Açúcar", measure: "1 xícara" },
-      { name: "Fermento", measure: "1 colher de sopa" }
-    ]
-  },
-  // ...outras receitas
-];
+import React, { useEffect, useState } from 'react';
+import styles from './styles.module.scss';
+import RecipeDetailsModal from '../../components/RecipeDetailsModal/index.tsx';
+import RecipeEditModal from '../../components/RecipeEditModal/index.tsx';
+import Pagination from '../../components/Pagination/index.tsx';
+import { RiInformation2Line, RiEdit2Line } from 'react-icons/ri';
+import { MdDeleteOutline } from 'react-icons/md';
+import { Grid, Button, Card, CardMedia, CardContent, Typography, CardActions } from '@mui/material';
+import RecipeService from '../../services/recipeService.ts';
+import useSnackbar from '../../hooks/useSnackbar.ts';
 
 export default function RecipeList() {
+  const { showSnackbar } = useSnackbar();
   const [selectedRecipe, setSelectedRecipe] = useState(null);
-  const [editRecipe, setEditRecipe] = useState(null);
+  const [recipe, setRecipe] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
+  const [recipes, setRecipes] = useState([]);
 
-  const paginatedRecipes = fakeUserRecipes.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  const itemsPerPage = 6;
+  const paginatedRecipes = recipes.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+  const getRecipesList = () => {
+    RecipeService.getAllRecipes()
+      .then((resp) => {
+        setRecipes(resp.recipes);
+      })
+      .catch((error) => {
+        showSnackbar('Erro ao carregar receitas.', 'error');
+      });
+  };
+
+  const editRecipe = (recipeToEdit) => {
+    RecipeService.updateRecipe(recipeToEdit)
+      .then((resp) => {
+        showSnackbar(resp.message, 'success');
+        getRecipesList();
+      })
+      .catch((error) => {
+        showSnackbar(error.data.message, 'error');
+      });
+  };
+
+  const deleteRecipe = (id) => {
+    RecipeService.deleteRecipe(id)
+      .then((resp) => {
+        showSnackbar(resp.message, 'success');
+        getRecipesList();
+      })
+      .catch(() => {
+        showSnackbar('Erro ao excluir receita.', 'error');
+      });
+  };
+
+  useEffect(() => {
+    getRecipesList();
+  }, []);
 
   return (
     <div className={styles.container}>
-      <h2>Minhas Receitas</h2>
-
-      <Grid container spacing={2}>
-        {paginatedRecipes.map((recipe, i) => (
-          <Grid item xs={12} sm={6} md={4} key={i}>
-            <div className={styles.card}>
-              <img src={recipe.strMealThumb} alt={recipe.strMeal} />
-              <div className={styles.cardContent}>
-                <h3>{recipe.strMeal}</h3>
-                <p className={styles.category}>{recipe.strCategory} • {recipe.strArea}</p>
-                <div className={styles.cardButtons}>
-                  <Button
-                    variant="outlined"
-                    size="small"
-                    onClick={() => setSelectedRecipe(recipe)}
-                    startIcon={<RiInformation2Line />}
-                  >
-                    Detalhes
-                  </Button>
-                  <div className={styles.actionButtons}>
-                    <Button
-                      variant="contained"
-                      size="small"
-                      onClick={() => setEditRecipe(recipe)}
-                      startIcon={<RiEdit2Line />}
-                    >
-                      Editar
-                    </Button>
-                    <Button
-                      variant="contained"
-                      size="small"
-                      color="error"
-                      onClick={() => setEditRecipe(recipe)}
-                      startIcon={<MdDeleteOutline />}
-                    >
-                      Excluir
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Grid>
-        ))}
-      </Grid>
+      <Typography variant="h4" gutterBottom>
+        Minhas Receitas
+      </Typography>
 
       <Pagination
         currentPage={currentPage}
-        totalItems={fakeUserRecipes.length}
+        totalItems={recipes.length}
         itemsPerPage={itemsPerPage}
         onPageChange={(page) => setCurrentPage(page)}
       />
 
-      {selectedRecipe && (
-        <RecipeDetailsModal recipe={selectedRecipe} onClose={() => setSelectedRecipe(null)} />
-      )}
+      <Grid container spacing={2} className={styles.cards}>
+        {paginatedRecipes.map((recipe: any, i) => (
+          <Grid item xs={12} sm={6} md={4} key={i}>
+            <Card className={styles.card}>
+              <CardMedia component="img" height="180" image={recipe.image_url} alt={recipe.name} />
+              <CardContent className={styles.cardContent}>
+                <Typography variant="h6">{recipe.name}</Typography>
+                <Typography variant="body2" color="textSecondary" className={styles.category}>
+                  {recipe.category} • {recipe.origin}
+                </Typography>
+              </CardContent>
+              <CardActions className={styles.cardButtons}>
+                <Button
+                  variant="outlined"
+                  size="small"
+                  onClick={() => setSelectedRecipe(recipe)}
+                  startIcon={<RiInformation2Line />}
+                >
+                  Detalhes
+                </Button>
+                <div className={styles.actionButtons}>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    onClick={() => setRecipe(recipe)}
+                    startIcon={<RiEdit2Line />}
+                  >
+                    Editar
+                  </Button>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    color="error"
+                    onClick={() => deleteRecipe(recipe.id)}
+                    startIcon={<MdDeleteOutline />}
+                  >
+                    Excluir
+                  </Button>
+                </div>
+              </CardActions>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
 
-      {editRecipe && (
-        <RecipeEditModal recipe={editRecipe} onClose={() => setEditRecipe(null)} onSave={() => {}} />
-      )}
+      {selectedRecipe && <RecipeDetailsModal recipe={selectedRecipe} onClose={() => setSelectedRecipe(null)} />}
+
+      {recipe && <RecipeEditModal recipe={recipe} onClose={() => setRecipe(null)} onSave={(e) => editRecipe(e)} />}
     </div>
   );
 }

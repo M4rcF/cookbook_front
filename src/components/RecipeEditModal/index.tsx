@@ -10,7 +10,7 @@ import TextArea from "../../components/TextArea/index.tsx";
 import MultipleOptions from "../../components/MultipleOptions/index.tsx";
 
 export default function RecipeEditModal({ recipe, onClose, onSave }) {
-  const { control, handleSubmit, setValue } = useForm();
+  const { control, handleSubmit, reset } = useForm();
 
   const [categories, setCategories] = useState([]);
   const [areas, setAreas] = useState([]);
@@ -25,27 +25,20 @@ export default function RecipeEditModal({ recipe, onClose, onSave }) {
 
   useEffect(() => {
     if (recipe) {
-      setValue("recipe_name", recipe.strMeal);
-      setValue("recipe_origin", recipe.strArea);
-      setValue("recipe_category", recipe.strCategory);
-      setValue("recipe_img_url", recipe.strMealThumb);
-      setValue("recipe_preparation_method", recipe.strInstructions);
-      setValue("recipe_ingredients", recipe.ingredients);
+      reset({
+        id: recipe.id,
+        name: recipe.name,
+        origin: recipe.origin,
+        category: recipe.category,
+        image_url: recipe.image_url,
+        instructions: recipe.instructions,
+        ingredients: recipe.ingredients
+      });
     }
-  }, [recipe, setValue]);
+  }, [recipe]);
 
   const submit = (formData) => {
-    const updatedRecipe = {
-      ...recipe,
-      strMeal: formData.recipe_name,
-      strArea: formData.recipe_origin,
-      strCategory: formData.recipe_category,
-      strMealThumb: formData.recipe_img_url,
-      strInstructions: formData.recipe_preparation_method,
-      ingredients: formData.recipe_ingredients
-    };
-
-    onSave(updatedRecipe);
+    onSave(formData);
     onClose();
   };
 
@@ -61,7 +54,7 @@ export default function RecipeEditModal({ recipe, onClose, onSave }) {
           <Grid container columns={{ xs: 1, sm: 4, md: 4 }} spacing={2}>
             <Grid item xs={1} sm={1} md={1}>
               <Controller
-                name="recipe_name"
+                name="name"
                 control={control}
                 render={({ field }) => (
                   <InputText {...field} label="Nome da Receita" required />
@@ -70,7 +63,7 @@ export default function RecipeEditModal({ recipe, onClose, onSave }) {
             </Grid>
             <Grid item xs={1} sm={1} md={1}>
               <Controller
-                name="recipe_origin"
+                name="origin"
                 control={control}
                 render={({ field }) => (
                   <Select {...field} label="Origem (País)" options={areas} required />
@@ -79,7 +72,7 @@ export default function RecipeEditModal({ recipe, onClose, onSave }) {
             </Grid>
             <Grid item xs={1} sm={1} md={1}>
               <Controller
-                name="recipe_category"
+                name="category"
                 control={control}
                 render={({ field }) => (
                   <Select {...field} label="Categoria" options={categories} required />
@@ -88,7 +81,7 @@ export default function RecipeEditModal({ recipe, onClose, onSave }) {
             </Grid>
             <Grid item xs={1} sm={1} md={1}>
               <Controller
-                name="recipe_img_url"
+                name="image_url"
                 control={control}
                 render={({ field }) => (
                   <InputText {...field} label="Imagem (URL)" required />
@@ -97,7 +90,7 @@ export default function RecipeEditModal({ recipe, onClose, onSave }) {
             </Grid>
             <Grid item xs={1} sm={2} md={2}>
               <Controller
-                name="recipe_preparation_method"
+                name="instructions"
                 control={control}
                 render={({ field }) => (
                   <TextArea {...field} label="Modo de Preparo" required />
@@ -106,7 +99,7 @@ export default function RecipeEditModal({ recipe, onClose, onSave }) {
             </Grid>
             <Grid item xs={1} sm={2} md={2}>
               <Controller
-                name="recipe_ingredients"
+                name="ingredients"
                 control={control}
                 render={({ field }) => (
                   <MultipleOptions {...field} label="Ingredientes" required />

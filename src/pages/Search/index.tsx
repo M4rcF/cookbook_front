@@ -7,9 +7,12 @@ import { Button, Grid } from '@mui/material';
 import InputText from '../../components/InputText/index.tsx';
 import Select from '../../components/Select/index.tsx';
 import Pagination from '../../components/Pagination/index.tsx';
+import RecipeService from '../../services/recipeService.ts';
+import useSnackbar from "../../hooks/useSnackbar.ts";
 
 export default function Search() {
   const { control, handleSubmit } = useForm();
+  const { showSnackbar } = useSnackbar();
 
   const [results, setResults] = useState<any>([]);
   const [categories, setCategories] = useState([]);
@@ -18,8 +21,6 @@ export default function Search() {
   const submit = async (form: any) => {
     try {
       let meals: any = [];
-
-      console.log('form.category', form.category);
 
       if (form.name) {
         const res = await axios.get(`https://www.themealdb.com/api/json/v1/1/search.php?s=${form.name}`);
@@ -31,12 +32,37 @@ export default function Search() {
         });
       } else if (form.ingredient) {
         const res = await axios.get(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${form.ingredient}`);
-        meals = res.data.meals.filter((meal) => {
-          const matchCategory = form.category !== undefined ? meal.strCategory === form.category : true;
-          const matchArea = form.origin !== undefined ? meal.strArea === form.origin : true;
-  
-          return matchCategory && matchArea;
-        });
+        const basicMeals = res.data.meals || [];
+      
+        if (basicMeals.length === 0) {
+          setResults([]);
+          return;
+        }
+      
+        // Limita para evitar sobrecarga
+        const limitedMeals = basicMeals.slice(0, 10); // pode aumentar depois
+      
+        const detailedMeals = await Promise.all(
+          limitedMeals.map(async (meal) => {
+            try {
+              const detailsRes = await axios.get(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${meal.idMeal}`);
+              return detailsRes.data.meals?.[0]; // só retorna se existir
+            } catch (err) {
+              console.error(`Erro ao buscar detalhes da receita ${meal.idMeal}`, err);
+              return null;
+            }
+          })
+        );
+      
+        const filtered = detailedMeals
+          .filter((meal) => meal !== null) // remove nulls
+          .filter((meal) => {
+            const matchCategory = form.category ? meal.strCategory === form.category : true;
+            const matchArea = form.origin ? meal.strArea === form.origin : true;
+            return matchCategory && matchArea;
+          });
+      
+        setResults(filtered);
       } else if (form.category) {
         const res = await axios.get(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${form.category}`);
         meals = res.data.meals.filter((meal) => {
@@ -56,7 +82,7 @@ export default function Search() {
   }
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 2;
+  const itemsPerPage = 1;
 
   const paginatedResults = results.slice(
     (currentPage - 1) * itemsPerPage,
@@ -75,6 +101,24 @@ export default function Search() {
     }
     return ingredients;
   };
+
+  const importRecipe = (meal: any) => {
+    const data = {
+      name: meal.strMeal,
+      category: meal.strCategory,
+      origin: meal.strArea,
+      instructions: meal.strInstructions,
+      ingredients: getIngredients(meal),
+      image_url: meal.strMealThumb
+    }
+
+    RecipeService.createRecipe(data)
+      .then((resp) => {
+        showSnackbar("Receita importada com sucesso", "success");
+      }).catch(() => {
+        showSnackbar("Erro ao importar receita.", "error");
+      })
+  }
 
   useEffect(() => {
     axios.get("https://www.themealdb.com/api/json/v1/1/list.php?c=list")
@@ -206,6 +250,15 @@ export default function Search() {
                       <li key={i}>{ing}</li>
                     ))}
                   </ul>
+                </div>
+                <div>
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    onClick={() => importRecipe(meal)}
+                  >
+                    Importar
+                  </Button>
                 </div>
               </div>
             </>

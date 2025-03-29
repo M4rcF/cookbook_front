@@ -1,53 +1,53 @@
 .container {
   width: 100%;
   padding: 24px;
+  box-sizing: border-box;
+  overflow-x: hidden;
 
   h2 {
     margin-bottom: 20px;
   }
 
-  .actionButtons {
-    display: flex;
-    gap: 10px;
+  .cards {
+    margin-top: 20px;
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transition: transform 0.2s;
+    
+      &:hover {
+        transform: translateY(-3px);
+      }
+
+      .cardContent {
+        flex-grow: 1;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      
+      .category {
+        font-size: 14px;
+        color: #666;
+      }
+      
+      .cardButtons {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px;
+      }
+      
+      .actionButtons {
+        display: flex;
+        gap: 10px;
+      }
+    }
   }
-}
-
-.card {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  transition: transform 0.2s;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-
-  &:hover {
-    transform: translateY(-3px);
-  }
-
-  img {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-  }
-}
-
-.cardContent {
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.category {
-  font-size: 14px;
-  color: #666;
-}
-
-.cardButtons {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  margin-top: auto;
 }

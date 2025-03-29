@@ -1,72 +1,59 @@
-import React, { useState } from 'react';
-import styles from './styles.module.scss';
-import { Button } from '@mui/material';
-
-type Ingredient = {
-  name: string;
-  measure: string;
-};
+import React from "react";
+import styles from "./styles.module.scss";
+import { Button } from "@mui/material";
 
 type MultipleOptionsProps = {
   label?: string;
   required?: boolean;
-  onChange?: (ingredients: Ingredient[]) => void;
+  value?: string[];
+  onChange?: (ingredients: string[]) => void;
 };
 
-export default function MultipleOptions(props: MultipleOptionsProps) {
-  const [options, setOptions] = useState<Ingredient[]>([
-    { name: "", measure: "" },
-  ]);
+export default function MultipleOptions({
+  value = [""],
+  onChange,
+  label,
+  required,
+}: MultipleOptionsProps) {
+  const ingredients = value.length > 0 ? value : [""];
 
   const addIngredient = () => {
-    const newOptions = [...options, { name: "", measure: "" }];
-    setOptions(newOptions);
-    props.onChange?.(newOptions);
+    onChange?.([...ingredients, ""]);
   };
 
   const removeIngredient = (index: number) => {
-    if (options.length > 1) {
-      const newOptions = options.filter((_, i) => i !== index);
-      setOptions(newOptions);
-      props.onChange?.(newOptions);
+    if (ingredients.length > 1) {
+      const updated = ingredients.filter((_, i) => i !== index);
+      onChange?.(updated);
     }
   };
 
-  const handleIngredientChange = (index: number, field: keyof Ingredient, value: string) => {
-    const newOptions = [...options];
-    newOptions[index][field] = value;
-    setOptions(newOptions);
-    props.onChange?.(newOptions);
+  const handleChange = (index: number, val: string) => {
+    const updated = [...ingredients];
+    updated[index] = val;
+    onChange?.(updated);
   };
 
   return (
     <div className={styles.container}>
-      <label>{props.label} {props.required && "*"}</label>
-      {options.map((ing, index) => (
+      <label>
+        {label} {required && "*"}
+      </label>
+      {ingredients.map((item, index) => (
         <div key={index} className={styles.ingredientRow}>
-          <div>
-            <input
-              type="text"
-              placeholder="Nome"
-              value={ing.name}
-              onChange={(e) => handleIngredientChange(index, "name", e.target.value)}
-            />
-          </div>
-          <div>
-            <input
-              type="text"
-              placeholder="Quantidade"
-              value={ing.measure}
-              onChange={(e) => handleIngredientChange(index, "measure", e.target.value)}
-            />
-          </div>
-          {options.length > 1 && (
+          <input
+            type="text"
+            placeholder="Ex: 200g de arroz"
+            value={item}
+            onChange={(e) => handleChange(index, e.target.value)}
+          />
+          {ingredients.length > 1 && (
             <Button
               variant="outlined"
-              onClick={() => removeIngredient(index)}
               color="error"
+              onClick={() => removeIngredient(index)}
             >
-                Remover Ingrediente
+              Remover
             </Button>
           )}
         </div>
@@ -76,7 +63,7 @@ export default function MultipleOptions(props: MultipleOptionsProps) {
         onClick={addIngredient}
         className={styles.addButton}
       >
-          Adicionar Ingrediente
+        Adicionar Ingrediente
       </Button>
     </div>
   );

@@ -1,30 +1,82 @@
 import React from "react";
 import styles from "./styles.module.scss";
-import { Button } from "@mui/material";
+import { Button, Grid, TextField } from "@mui/material";
+import { useForm, Controller } from "react-hook-form";
+import Authentication from "../../services/authentication.ts";
+
+type LoginFormData = {
+  email: string;
+  password: string;
+};
 
 export default function Login() {
+  const { handleSubmit, control } = useForm<LoginFormData>();
+
+  const onSubmit = (data: LoginFormData) => {
+    Authentication.login(data).then((resp) => {
+      if (resp) {
+        window.location.href = "/";
+      }
+    });
+  };
+
   return (
     <div className={styles.authContainer}>
       <div className={styles.left}>
-        <img src="/logo.svg" alt="Ilustração"/>
+        <img src="/logo.svg" alt="Ilustração" />
       </div>
 
       <div className={styles.right}>
         <div className={styles.formBox}>
-          <form>
-            <label>Usuário</label>
-            <input type="text" placeholder="Seu e-mail ou CPF" />
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Controller
+                  name="email"
+                  control={control}
+                  rules={{ required: "Email obrigatório" }}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Email"
+                      placeholder="Seu e-mail"
+                      fullWidth
+                      required
+                    />
+                  )}
+                />
+              </Grid>
 
-            <label>Senha</label>
-            <input type="password" placeholder="Sua senha" />
+              <Grid item xs={12}>
+                <Controller
+                  name="password"
+                  control={control}
+                  rules={{ required: "Senha obrigatória" }}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Senha"
+                      type="password"
+                      placeholder="Sua senha"
+                      fullWidth
+                      required
+                    />
+                  )}
+                />
+              </Grid>
 
-            <div className={styles.links}>
-              <a href="#">Esqueceu a senha?</a>
-            </div>
+              <Grid item xs={12}>
+                <div className={styles.links}>
+                  <a href="#">Esqueceu a senha?</a>
+                </div>
+              </Grid>
 
-            <Button type="submit" variant="contained" className={styles.button}>
-              Acessar
-            </Button>
+              <Grid item xs={12}>
+                <Button type="submit" variant="contained" fullWidth>
+                  Acessar
+                </Button>
+              </Grid>
+            </Grid>
           </form>
 
           <footer>

@@ -5,6 +5,7 @@ type InputTextProps = {
   label: string;
   onChange: any;
   required?: boolean;
+  value?: any;
 }
 
 export default function TextArea(props: InputTextProps) {
@@ -15,6 +16,7 @@ export default function TextArea(props: InputTextProps) {
         onChange={props.onChange}
         required={props.required}
         maxLength={1500}
+        value={props.value}
       />
     </div>
   );

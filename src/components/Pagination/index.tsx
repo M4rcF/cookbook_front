@@ -1,5 +1,7 @@
 import React from 'react';
 import styles from './styles.module.scss';
+import { MdOutlineKeyboardDoubleArrowLeft, MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight, MdKeyboardDoubleArrowRight } from "react-icons/md";
+
 
 interface PaginationProps {
   currentPage: number;
@@ -23,12 +25,12 @@ export default function Pagination({
     <div className={styles.pagination}>
       {/* Primeira página */}
       <button onClick={() => onPageChange(1)} disabled={currentPage === 1}>
-        ⏮️
+        <MdOutlineKeyboardDoubleArrowLeft />
       </button>
 
       {/* Página anterior */}
       <button onClick={() => onPageChange(currentPage - 1)} disabled={currentPage === 1}>
-        ⬅️
+        <MdOutlineKeyboardArrowLeft />
       </button>
 
       {/* Números de páginas */}
@@ -44,12 +46,12 @@ export default function Pagination({
 
       {/* Próxima página */}
       <button onClick={() => onPageChange(currentPage + 1)} disabled={currentPage === totalPages}>
-        ➡️
+        <MdOutlineKeyboardArrowRight />
       </button>
 
       {/* Última página */}
       <button onClick={() => onPageChange(totalPages)} disabled={currentPage === totalPages}>
-        ⏭️
+        <MdKeyboardDoubleArrowRight />
       </button>
     </div>
   );

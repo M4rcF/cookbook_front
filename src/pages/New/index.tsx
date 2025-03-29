@@ -3,11 +3,12 @@ import axios from 'axios';
 import React from 'react';
 import styles from './styles.module.scss';
 import { useForm, Controller } from "react-hook-form";
-import { Button, Grid } from '@mui/material';
+import { Button, FormControlLabel, Grid, Switch } from '@mui/material';
 import InputText from "../../components/InputText/index.tsx";
 import Select from "../../components/Select/index.tsx";
 import TextArea from "../../components/TextArea/index.tsx";
 import MultipleOptions from "../../components/MultipleOptions/index.tsx";
+import RecipeService from "../../services/recipeService.ts";
 
 export default function New() {
   const { control, handleSubmit } = useForm();
@@ -25,6 +26,10 @@ export default function New() {
 
   const submit = (form: any) => {
     console.log('form', form);
+    RecipeService.createRecipe(form)
+      .then((resp) => {
+        console.log('resp', resp);
+      })
   }
 
   return (
@@ -43,7 +48,7 @@ export default function New() {
             md={1}
           >
             <Controller
-              name={'recipe_name'}
+              name={'name'}
               control={control}
               render={({ field }) => (
                 <InputText
@@ -61,7 +66,7 @@ export default function New() {
             md={1}
           >
             <Controller
-              name={'recipe_origin'}
+              name={'origin'}
               control={control}
               render={({ field }) => (
                 <Select
@@ -80,7 +85,7 @@ export default function New() {
             md={1}
           >
             <Controller
-              name={'recipe_category'}
+              name={'category'}
               control={control}
               render={({ field }) => (
                 <Select
@@ -99,7 +104,7 @@ export default function New() {
             md={1}
           >
             <Controller
-              name={'recipe_img_url'}
+              name={'image_url'}
               control={control}
               render={({ field }) => (
                 <InputText
@@ -113,11 +118,33 @@ export default function New() {
           <Grid
             item
             xs={1}
+            sm={4}
+            md={4}
+          >
+            <Controller
+              name={'public'}
+              control={control}
+              render={({ field }) => (
+                <FormControlLabel
+                  control={
+                    <Switch
+                      {...field}
+                      checked={field.value}
+                    />
+                  }
+                  label="Tornar receita pública"
+                />
+              )}
+            />
+          </Grid>
+          <Grid
+            item
+            xs={1}
             sm={2}
             md={2}
           >
             <Controller
-              name={'recipe_preparation_method'}
+              name={'instructions'}
               control={control}
               render={({ field }) => (
                 <TextArea
@@ -135,7 +162,7 @@ export default function New() {
             md={2}
           >
             <Controller
-              name={'recipe_ingredients'}
+              name={'ingredients'}
               control={control}
               render={({ field }) => (
                 <MultipleOptions

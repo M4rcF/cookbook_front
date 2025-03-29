@@ -11,6 +11,7 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ setIsSidebarExpanded }: SidebarProps) {
+  const token = localStorage.getItem("token");
   const [expanded, setExpanded] = useState(false);
 
   const toggleSidebar = () => {
@@ -25,7 +26,7 @@ export default function Sidebar({ setIsSidebarExpanded }: SidebarProps) {
         transition={{ duration: 0 }}
       >
         <div className={styles.header}>
-          <button onClick={toggleSidebar} className={styles.button}>
+          <button onClick={toggleSidebar} className={styles.button} disabled={!token}>
             { expanded ? <X size={24} color="#000000"/> : <Menu size={24} color="#000000"/> }
           </button>
         </div>

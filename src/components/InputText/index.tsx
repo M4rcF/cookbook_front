@@ -5,6 +5,7 @@ type InputTextProps = {
   label: string;
   onChange: any;
   required?: boolean;
+  value?: any;
 }
 
 export default function InputText(props: InputTextProps) {
@@ -15,6 +16,7 @@ export default function InputText(props: InputTextProps) {
         type="text"
         onChange={props.onChange}
         required={props.required}
+        value={props.value}
       />
     </div>
   );
