@@ -1,40 +1,39 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import styles from './styles.module.scss';
 
 const faqData = [
   {
-    question: "Como posso cadastrar uma nova receita?",
-    answer: "Para cadastrar uma nova receita, vá até a seção 'Minhas Receitas' e clique em 'Cadastrar Receita'. Preencha os campos obrigatórios e clique em 'Salvar'.",
+    question: "How can I register a new recipe?",
+    answer: "To register a new recipe, go to the 'My Recipes' section and click on 'Register Recipe'. Fill in the required fields and click 'Save'.",
   },
   {
-    question: "Posso editar uma receita depois de cadastrada?",
-    answer: "Sim! Basta acessar a lista de receitas cadastradas e clicar no botão 'Editar'. Você poderá modificar qualquer campo, incluindo nome, ingredientes e modo de preparo.",
+    question: "Can I edit a recipe after it is registered?",
+    answer: "Yes! Just go to your list of registered recipes and click the 'Edit' button. You will be able to modify any field, including name, ingredients, and preparation method.",
   },
   {
-    question: "Como posso tornar uma receita pública ou privada?",
-    answer: "Na listagem de receitas, você encontrará um botão de alternância (switch) que permite definir se a receita será pública ou privada.",
+    question: "How can I make a recipe public or private?",
+    answer: "In the recipe list, you will find a toggle switch that allows you to set whether the recipe is public or private.",
   },
   {
-    question: "Os comentários nas receitas são reais?",
-    answer: "Não, atualmente os comentários são simulados para fins de teste. Em uma versão futura, será possível adicionar comentários reais.",
+    question: "Are the recipe comments real?",
+    answer: "No, currently the comments are simulated for testing purposes.",
   },
   {
-    question: "Como posso pesquisar receitas cadastradas?",
-    answer: "Você pode pesquisar receitas cadastradas manualmente na seção 'Minhas Receitas' ou utilizar a pesquisa avançada na API externa para encontrar novas receitas.",
+    question: "How can I search for registered recipes?",
+    answer: "You can search for manually registered recipes in the 'My Recipes' section or use the advanced search through the external API to find new recipes.",
   },
 ];
 
 export default function FAQ() {
-  const [openIndex, setOpenIndex] = useState(null);
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  const toggleFAQ = (index) => {
+  const toggleFAQ = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
   return (
     <div className={styles.container}>
-      <h2>Perguntas Frequentes (FAQ)</h2>
+      <h2>Frequently Asked Questions (FAQ)</h2>
       <div className={styles.faqList}>
         {faqData.map((item, index) => (
           <div key={index} className={styles.faqItem}>

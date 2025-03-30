@@ -43,7 +43,7 @@ export default function MultipleOptions({
         <div key={index} className={styles.ingredientRow}>
           <input
             type="text"
-            placeholder="Ex: 200g de arroz"
+            placeholder="Ex: 200g of rice"
             value={item}
             onChange={(e) => handleChange(index, e.target.value)}
           />
@@ -63,7 +63,7 @@ export default function MultipleOptions({
         onClick={addIngredient}
         className={styles.addButton}
       >
-        Adicionar Ingrediente
+        Add Ingredient
       </Button>
     </div>
   );

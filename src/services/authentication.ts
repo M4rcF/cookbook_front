@@ -19,6 +19,7 @@ const Authentication = {
   logout: async () => {
     const res = await api.post("/api/auth/logout");
     if (res.status === 200) {
+      localStorage.removeItem("currentUser");
       localStorage.removeItem("token");
     }
 

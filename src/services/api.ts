@@ -3,6 +3,7 @@ import axios from "axios";
 const api = axios.create({
   baseURL: "http://localhost:5000", // ou sua URL real
 });
+const fullUrl = window.location.href;
 
 // ✅ Interceptor para incluir o token no header
 api.interceptors.request.use((config) => {
@@ -19,7 +20,7 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response, // sucesso
   (error) => {
-    if (error.response?.status === 401) {
+    if (error.response?.status === 401 && !fullUrl.includes('/login')) {
       localStorage.removeItem("token");
       window.location.href = "/login"; // redireciona
     }

@@ -8,6 +8,7 @@ import { Grid, Button, Card, CardMedia, CardContent, Typography, CardActions } f
 import RecipeService from '../../services/recipeService.ts';
 import useSnackbar from '../../hooks/useSnackbar.ts';
 import RecipeDetailsModal from '../../components/RecipeDetailsModal/index.tsx';
+import { FiSearch } from 'react-icons/fi';
 
 export default function RecipeList() {
   const { showSnackbar } = useSnackbar();
@@ -25,7 +26,7 @@ export default function RecipeList() {
         setRecipes(resp.recipes);
       })
       .catch((error) => {
-        showSnackbar('Erro ao carregar receitas.', 'error');
+        showSnackbar(error.response.data.message, 'error');
       });
   };
 
@@ -36,18 +37,18 @@ export default function RecipeList() {
         getRecipesList();
       })
       .catch((error) => {
-        showSnackbar(error.data.message, 'error');
+        showSnackbar(error.response.data.message, 'error');
       });
   };
 
-  const deleteRecipe = (id) => {
+  const deleteRecipe = (id: number) => {
     RecipeService.deleteRecipe(id)
       .then((resp) => {
         showSnackbar(resp.message, 'success');
         getRecipesList();
       })
-      .catch(() => {
-        showSnackbar('Erro ao excluir receita.', 'error');
+      .catch((error) => {
+        showSnackbar(error.response.data.message, 'error');
       });
   };
 
@@ -57,7 +58,7 @@ export default function RecipeList() {
 
   return (
     <div className={styles.container}>
-      <h2>Minhas Receitas</h2>
+      <h2>My Recipes</h2>
 
       <Pagination
         currentPage={currentPage}
@@ -84,7 +85,7 @@ export default function RecipeList() {
                   onClick={() => setSelectedRecipe(recipe)}
                   startIcon={<RiInformation2Line />}
                 >
-                  Detalhes
+                  Details
                 </Button>
                 <div className={styles.actionButtons}>
                   <Button
@@ -93,7 +94,7 @@ export default function RecipeList() {
                     onClick={() => setRecipe(recipe)}
                     startIcon={<RiEdit2Line />}
                   >
-                    Editar
+                    Edit
                   </Button>
                   <Button
                     variant="contained"
@@ -102,7 +103,7 @@ export default function RecipeList() {
                     onClick={() => deleteRecipe(recipe.id)}
                     startIcon={<MdDeleteOutline />}
                   >
-                    Excluir
+                    Delete
                   </Button>
                 </div>
               </CardActions>
@@ -111,8 +112,28 @@ export default function RecipeList() {
         ))}
       </Grid>
 
-      {selectedRecipe && <RecipeDetailsModal recipe={selectedRecipe} onClose={() => setSelectedRecipe(null)} />}
-      {recipe && <RecipeEditModal recipe={recipe} onClose={() => setRecipe(null)} onSave={(e) => editRecipe(e)} />}
+      {
+        recipes.length === 0 && (
+          <div className={styles.notResult}>
+            <FiSearch className={styles.icon} />
+            <h3>Sorry! No results found</h3>
+            <p>Try registering a recipe</p>
+          </div>
+        )
+      }
+      {selectedRecipe && (
+        <RecipeDetailsModal
+          recipe={selectedRecipe}
+          onClose={() => setSelectedRecipe(null)}
+        />
+      )}
+      {recipe && (
+        <RecipeEditModal
+          recipe={recipe}
+          onClose={() => setRecipe(null)}
+          onSave={(e) => editRecipe(e)}
+        />
+      )}
     </div>
   );
 }

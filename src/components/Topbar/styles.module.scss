@@ -5,13 +5,14 @@
   box-shadow: 0 4px 2px -2px gray;
   padding: 12px 20px;
   height: 60px;
-  width: calc(100% - 262px);
+  width: 100%;
   position: fixed;
   top: 0;
   z-index: 1000;
+  background: white;
 
   &.collapsed {
-    width: calc(100% - 106px);
+    width: 100%;
   }
 
   .logo {
@@ -19,6 +20,7 @@
     align-items: center;
     font-size: 20px;
     font-weight: bold;
+    margin-left: 80px;
 
     .logoText {
       margin-left: 8px;
@@ -28,6 +30,7 @@
   .userSection {
     position: relative;
     cursor: pointer;
+    margin-right: 20px;
 
     .menuDropdown {
       position: absolute;

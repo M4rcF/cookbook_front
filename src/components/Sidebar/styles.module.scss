@@ -1,20 +1,30 @@
+/* Garante que todos os elementos usem box-sizing border-box */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 .sidebar {
-  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  min-height: 100vh;
   padding: 0 16px;
   display: flex;
-  box-shadow: 1px 1px 4px #00000014;
   flex-direction: column;
-  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.14);
+  z-index: 1200;
 }
 
 .header {
   display: flex;
-  justify-content: space-between;
+  justify-content: end;
   align-items: center;
+  margin-top: 20px;
 }
 
 .button {
-  margin-top: 20px;
   background: none;
   border: none;
   cursor: pointer;
@@ -31,6 +41,11 @@
   padding: 8px;
   border-radius: 4px;
 
+  a {
+    text-decoration: none;
+    color: #4d4d4d;
+  }
+
   span {
     color: #4d4d4d;
     font-weight: bold;
@@ -43,15 +58,22 @@
     margin: 5px 0;
 
     li {
-      padding: 6px;
-    }
-
-    a {
-      color: #4d4d4d;
+      padding: 6px 0;
     }
   }
 }
 
 .submenuItem {
   list-style: none;
+}
+
+/* Overlay que cobre toda a página quando a sidebar está expandida */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1100;
 }

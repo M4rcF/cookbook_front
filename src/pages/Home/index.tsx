@@ -5,6 +5,7 @@ import styles from './styles.module.scss';
 import RecipeDetailsModal from "../../components/RecipeDetailsModal/index.tsx";
 import Pagination from "../../components/Pagination/index.tsx";
 import RecipeService from '../../services/recipeService.ts';
+import { FiSearch } from "react-icons/fi";
 
 export default function Home() {
   const [selectedRecipe, setSelectedRecipe] = useState(null);
@@ -27,7 +28,7 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
-      <h2>Receitas Públicas</h2>
+      <h2>Public Recipes</h2>
       <Pagination
         currentPage={currentPage}
         totalItems={recipes.length}
@@ -35,7 +36,11 @@ export default function Home() {
         onPageChange={(page) => setCurrentPage(page)}
       />
       {recipes.length === 0 ? (
-        <p>Nenhuma receita pública disponível.</p>
+        <div className={styles.notResult}>
+          <FiSearch className={styles.icon} />
+          <h3>Sorry! No results found</h3>
+          <p>Try again later</p>
+        </div>
       ) : (
         <div className={styles.recipeGrid}>
           {paginatedRecipes.map((recipe: any) => (
@@ -45,7 +50,7 @@ export default function Home() {
                 <h3>{recipe.name}</h3>
                 <p className={styles.category}>{recipe.category} • {recipe.origin}</p>
                 <button className={styles.expandButton} onClick={() => setSelectedRecipe(recipe)}>
-                  <RiInformation2Line size={18} /> Mais detalhes
+                  <RiInformation2Line size={18} /> More details
                 </button>
                 <br/>
               </div>

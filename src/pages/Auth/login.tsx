@@ -3,6 +3,7 @@ import styles from "./styles.module.scss";
 import { Button, Grid, TextField } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import Authentication from "../../services/authentication.ts";
+import useSnackbar from "../../hooks/useSnackbar.ts";
 
 type LoginFormData = {
   email: string;
@@ -11,12 +12,15 @@ type LoginFormData = {
 
 export default function Login() {
   const { handleSubmit, control } = useForm<LoginFormData>();
+  const { showSnackbar } = useSnackbar();
 
   const onSubmit = (data: LoginFormData) => {
     Authentication.login(data).then((resp) => {
       if (resp) {
         window.location.href = "/";
       }
+    }).catch((error) => {
+      showSnackbar(error.response.data.message, 'error');
     });
   };
 

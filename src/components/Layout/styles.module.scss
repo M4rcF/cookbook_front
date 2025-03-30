@@ -8,11 +8,12 @@
     flex-direction: column;
     width: 100%;
     height: 100vh;
+    background-color: #eef3f5;
 
     & > div:last-child {
       margin-top: 84px;
-      background-color: #eef3f5;
       height: 100%;
+      padding: 0 20px 0 92px;
 
       & > h2 {
         text-align: start;

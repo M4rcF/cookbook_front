@@ -23,6 +23,9 @@ export default function Register() {
 
   return (
     <div className={styles.authContainer}>
+      <div className={styles.left}>
+        <img src="/logo.svg" alt="Ilustração" />
+      </div>
       <div className={styles.right}>
         <div className={styles.formBox}>
           <form onSubmit={handleSubmit(onSubmit)}>

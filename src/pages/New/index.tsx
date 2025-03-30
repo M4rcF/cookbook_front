@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import axios from 'axios';
 import React from 'react';
 import styles from './styles.module.scss';
@@ -9,12 +9,49 @@ import Select from "../../components/Select/index.tsx";
 import TextArea from "../../components/TextArea/index.tsx";
 import MultipleOptions from "../../components/MultipleOptions/index.tsx";
 import RecipeService from "../../services/recipeService.ts";
+import useSnackbar from "../../hooks/useSnackbar.ts";
 
 export default function New() {
-  const { control, handleSubmit } = useForm();
+  const { showSnackbar } = useSnackbar();
+  const { control, handleSubmit, reset, watch } = useForm();
 
   const [categories, setCategories] = useState([]);
   const [areas, setAreas] = useState([]);
+
+  const submit = (form: any) => {
+    RecipeService.createRecipe(form)
+      .then((resp) => {
+        showSnackbar(resp.message, 'success');
+        reset({
+          name: '',
+          origin: '',
+          category: '',
+          image_url: '',
+          public: false,
+          instructions: ''
+        });
+      })
+      .catch((error) => {
+        showSnackbar(error.response.data.message, 'error');
+      });
+  }
+
+  const isFormInvalid = (data: any) => {
+    const {
+      name,
+      origin,
+      category,
+      image_url,
+      instructions,
+      ingredients
+    } = data;
+  
+    const hasBasicFields = name && origin && category && image_url && instructions;
+  
+    const hasValidIngredients = Array.isArray(ingredients) && ingredients[0] !== '';
+
+    return !(hasBasicFields && hasValidIngredients);
+  }
 
   useEffect(() => {
     axios.get("https://www.themealdb.com/api/json/v1/1/list.php?c=list")
@@ -24,17 +61,9 @@ export default function New() {
       .then(res => setAreas(res.data.meals.map(a => a.strArea)));
   }, []);
 
-  const submit = (form: any) => {
-    console.log('form', form);
-    RecipeService.createRecipe(form)
-      .then((resp) => {
-        console.log('resp', resp);
-      })
-  }
-
   return (
     <div className={styles.container}>
-      <h2>Cadastrar Receita</h2>
+      <h2>Register Recipe</h2>
       <form onSubmit={handleSubmit(submit)}>
         <Grid
           container
@@ -53,7 +82,7 @@ export default function New() {
               render={({ field }) => (
                 <InputText
                   {...field}
-                  label={'Nome da Receita'}
+                  label={'Name'}
                   required
                 />
               )}
@@ -71,7 +100,7 @@ export default function New() {
               render={({ field }) => (
                 <Select
                   {...field}
-                  label={'Origem (País)'}
+                  label={'Origin (Country)'}
                   options={areas}
                   required
                 />
@@ -90,7 +119,7 @@ export default function New() {
               render={({ field }) => (
                 <Select
                   {...field}
-                  label={'Categoria'}
+                  label={'Category'}
                   options={categories}
                   required
                 />
@@ -109,7 +138,7 @@ export default function New() {
               render={({ field }) => (
                 <InputText
                   {...field}
-                  label={'Imagem (URL)'}
+                  label={'Image (URL)'}
                   required
                 />
               )}
@@ -132,7 +161,7 @@ export default function New() {
                       checked={field.value}
                     />
                   }
-                  label="Tornar receita pública"
+                  label="Make recipe public"
                 />
               )}
             />
@@ -149,7 +178,7 @@ export default function New() {
               render={({ field }) => (
                 <TextArea
                   {...field}
-                  label={'Modo de Preparo'}
+                  label={'Instructions'}
                   required
                 />
               )}
@@ -167,10 +196,9 @@ export default function New() {
               render={({ field }) => (
                 <MultipleOptions
                   {...field}
-                  label="Ingredientes"
+                  label="Ingredients"
                   required
                 />
-
               )}
             />
           </Grid>
@@ -185,8 +213,9 @@ export default function New() {
               type="submit"
               variant="contained"
               className={styles.submitButton}
+              disabled={isFormInvalid(watch())}
             >
-              Cadastrar Receita
+              Register
             </Button>
           </Grid>
         </Grid>

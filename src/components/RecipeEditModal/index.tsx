@@ -3,17 +3,39 @@ import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
 import styles from "./styles.module.scss";
-import { Button, Grid } from "@mui/material";
+import { Button, FormControlLabel, Grid, Switch } from "@mui/material";
 import InputText from "../../components/InputText/index.tsx";
 import Select from "../../components/Select/index.tsx";
 import TextArea from "../../components/TextArea/index.tsx";
 import MultipleOptions from "../../components/MultipleOptions/index.tsx";
 
 export default function RecipeEditModal({ recipe, onClose, onSave }) {
-  const { control, handleSubmit, reset } = useForm();
+  const { control, handleSubmit, reset, watch } = useForm();
 
   const [categories, setCategories] = useState([]);
   const [areas, setAreas] = useState([]);
+
+  const submit = (formData) => {
+    onSave(formData);
+    onClose();
+  };
+
+  const isFormInvalid = (data: any) => {
+    const {
+      name,
+      origin,
+      category,
+      image_url,
+      instructions,
+      ingredients
+    } = data;
+  
+    const hasBasicFields = name && origin && category && image_url && instructions;
+  
+    const hasValidIngredients = Array.isArray(ingredients) && ingredients[0] !== '';
+
+    return !(hasBasicFields && hasValidIngredients);
+  }
 
   useEffect(() => {
     axios.get("https://www.themealdb.com/api/json/v1/1/list.php?c=list")
@@ -24,6 +46,8 @@ export default function RecipeEditModal({ recipe, onClose, onSave }) {
   }, []);
 
   useEffect(() => {
+    console.log('recipe', recipe);
+
     if (recipe) {
       reset({
         id: recipe.id,
@@ -32,15 +56,11 @@ export default function RecipeEditModal({ recipe, onClose, onSave }) {
         category: recipe.category,
         image_url: recipe.image_url,
         instructions: recipe.instructions,
-        ingredients: recipe.ingredients
+        ingredients: recipe.ingredients,
+        public: recipe.public,
       });
     }
   }, [recipe]);
-
-  const submit = (formData) => {
-    onSave(formData);
-    onClose();
-  };
 
   return (
     <div className={styles.modalOverlay}>
@@ -57,7 +77,11 @@ export default function RecipeEditModal({ recipe, onClose, onSave }) {
                 name="name"
                 control={control}
                 render={({ field }) => (
-                  <InputText {...field} label="Nome da Receita" required />
+                  <InputText
+                    {...field}
+                    label="name"
+                    required
+                  />
                 )}
               />
             </Grid>
@@ -66,7 +90,12 @@ export default function RecipeEditModal({ recipe, onClose, onSave }) {
                 name="origin"
                 control={control}
                 render={({ field }) => (
-                  <Select {...field} label="Origem (País)" options={areas} required />
+                  <Select
+                    {...field}
+                    label="Origin (Country)"
+                    options={areas}
+                    required
+                  />
                 )}
               />
             </Grid>
@@ -75,7 +104,12 @@ export default function RecipeEditModal({ recipe, onClose, onSave }) {
                 name="category"
                 control={control}
                 render={({ field }) => (
-                  <Select {...field} label="Categoria" options={categories} required />
+                  <Select
+                    {...field}
+                    label="Category"
+                    options={categories}
+                    required
+                  />
                 )}
               />
             </Grid>
@@ -84,7 +118,33 @@ export default function RecipeEditModal({ recipe, onClose, onSave }) {
                 name="image_url"
                 control={control}
                 render={({ field }) => (
-                  <InputText {...field} label="Imagem (URL)" required />
+                  <InputText
+                    {...field}
+                    label="Image (URL)"
+                    required
+                  />
+                )}
+              />
+            </Grid>
+            <Grid
+              item
+              xs={1}
+              sm={4}
+              md={4}
+            >
+              <Controller
+                name={'public'}
+                control={control}
+                render={({ field }) => (
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        {...field}
+                        checked={field.value}
+                      />
+                    }
+                    label="Make recipe public"
+                  />
                 )}
               />
             </Grid>
@@ -93,7 +153,11 @@ export default function RecipeEditModal({ recipe, onClose, onSave }) {
                 name="instructions"
                 control={control}
                 render={({ field }) => (
-                  <TextArea {...field} label="Modo de Preparo" required />
+                  <TextArea
+                    {...field}
+                    label="Modo de Preparo"
+                    required
+                  />
                 )}
               />
             </Grid>
@@ -102,13 +166,21 @@ export default function RecipeEditModal({ recipe, onClose, onSave }) {
                 name="ingredients"
                 control={control}
                 render={({ field }) => (
-                  <MultipleOptions {...field} label="Ingredientes" required />
+                  <MultipleOptions
+                    {...field}
+                    label="Ingredientes"
+                    required
+                  />
                 )}
               />
             </Grid>
             <Grid item xs={1} sm={4} md={4} className={styles.submitButton}>
-              <Button type="submit" variant="contained">
-                Salvar Alterações
+              <Button
+                type="submit"
+                variant="contained"
+                disabled={isFormInvalid(watch())}
+              >
+                Edit
               </Button>
             </Grid>
           </Grid>

@@ -1,12 +1,11 @@
 .container {
   width: 100%;
-  padding: 20px;
 
   .faqList {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    margin-right: 40px;
+    margin: 0 40px 0 20px;
   }
   
   .faqItem {

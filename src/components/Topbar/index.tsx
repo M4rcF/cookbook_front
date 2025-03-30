@@ -39,7 +39,15 @@ export default function Topbar({ isSidebarExpanded }: TopbarProps) {
         <span className={styles.logoText}>Cookbook</span>
       </div>
       <div className={styles.userSection}>
-        <span onClick={toggleMenu}>{user.name}</span>
+        {
+          user?.name && (
+            <span
+              onClick={toggleMenu}
+            >
+              {user.name}
+            </span>
+          )
+        }
         {menuOpen && (
           <div className={styles.menuDropdown}>
             <button onClick={openModal} className={styles.menuButton}>
