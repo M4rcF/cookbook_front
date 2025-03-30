@@ -47,6 +47,7 @@ export default function Home() {
                 <button className={styles.expandButton} onClick={() => setSelectedRecipe(recipe)}>
                   <RiInformation2Line size={18} /> Mais detalhes
                 </button>
+                <br/>
               </div>
             </div>
           ))}

@@ -1,26 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import styles from './styles.module.scss';
-import RecipeDetailsModal from '../../components/RecipeDetailsModal/index.tsx';
 import RecipeEditModal from '../../components/RecipeEditModal/index.tsx';
 import Pagination from '../../components/Pagination/index.tsx';
-import { RiInformation2Line, RiEdit2Line } from 'react-icons/ri';
+import { RiEdit2Line, RiInformation2Line } from 'react-icons/ri';
 import { MdDeleteOutline } from 'react-icons/md';
 import { Grid, Button, Card, CardMedia, CardContent, Typography, CardActions } from '@mui/material';
 import RecipeService from '../../services/recipeService.ts';
 import useSnackbar from '../../hooks/useSnackbar.ts';
+import RecipeDetailsModal from '../../components/RecipeDetailsModal/index.tsx';
 
 export default function RecipeList() {
   const { showSnackbar } = useSnackbar();
-  const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [recipe, setRecipe] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [recipes, setRecipes] = useState([]);
+  const [selectedRecipe, setSelectedRecipe] = useState(null);
 
   const itemsPerPage = 6;
   const paginatedRecipes = recipes.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   const getRecipesList = () => {
-    RecipeService.getAllRecipes()
+    RecipeService.getRecipesUser()
       .then((resp) => {
         setRecipes(resp.recipes);
       })
@@ -57,9 +57,7 @@ export default function RecipeList() {
 
   return (
     <div className={styles.container}>
-      <Typography variant="h4" gutterBottom>
-        Minhas Receitas
-      </Typography>
+      <h2>Minhas Receitas</h2>
 
       <Pagination
         currentPage={currentPage}
@@ -114,7 +112,6 @@ export default function RecipeList() {
       </Grid>
 
       {selectedRecipe && <RecipeDetailsModal recipe={selectedRecipe} onClose={() => setSelectedRecipe(null)} />}
-
       {recipe && <RecipeEditModal recipe={recipe} onClose={() => setRecipe(null)} onSave={(e) => editRecipe(e)} />}
     </div>
   );

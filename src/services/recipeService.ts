@@ -6,11 +6,6 @@ const RecipeService = {
     return response.data;
   },
 
-  // getAllRecipesByUser: async (id: number) => {
-  //   const response = await api.get(`/api/recipes/mine`);
-  //   return response.data;
-  // },
-
   createRecipe: async (data: any) => {
     const response = await api.post("/api/recipes", data);
     return response.data;
@@ -24,7 +19,12 @@ const RecipeService = {
   deleteRecipe: async (id: number) => {
     const response = await api.delete(`/api/recipes/${id}`);
     return response.data;
-  }
+  },
+
+  getRecipesUser: async () => {
+    const response = await api.get('/api/recipes/user');
+    return response.data;
+  },
 };
 
 export default RecipeService;

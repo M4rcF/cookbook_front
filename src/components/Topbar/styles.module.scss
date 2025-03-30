@@ -9,108 +9,52 @@
   position: fixed;
   top: 0;
   z-index: 1000;
-}
 
-.topbar.collapsed {
-  width: calc(100% - 106px);
-}
+  &.collapsed {
+    width: calc(100% - 106px);
+  }
 
-.logo {
-  display: flex;
-  align-items: center;
-  font-size: 20px;
-  font-weight: bold;
-}
+  .logo {
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    font-weight: bold;
 
-.logoText {
-  margin-left: 8px;
-}
+    .logoText {
+      margin-left: 8px;
+    }
+  }
 
-.userSection {
-  position: relative;
-  cursor: pointer;
-}
+  .userSection {
+    position: relative;
+    cursor: pointer;
 
-.profile {
-  margin-right: 14px;
-}
+    .menuDropdown {
+      position: absolute;
+      top: 50px;
+      right: 0;
+      background: white;
+      color: black;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 4px;
+      width: 160px;
+      padding: 8px;
+      z-index: 1100;
 
-.menuDropdown {
-  position: absolute;
-  top: 50px;
-  right: 0;
-  background: white;
-  color: black;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
-  width: 160px;
-  padding: 8px;
-  z-index: 1100;
-}
+      .menuButton {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        background: none;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
 
-.menuButton {
-  width: 100%;
-  padding: 10px;
-  border: none;
-  background: none;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-}
-
-.menuButton:hover {
-  background: #ddd;
-}
-
-.modalOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1200;
-}
-
-.modal {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  width: 320px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.input {
-  width: 100%;
-  padding: 8px;
-  margin: 6px 0;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.modalActions {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-}
-
-.cancelButton {
-  padding: 8px 12px;
-  border: none;
-  background: #ccc;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-.saveButton {
-  padding: 8px 12px;
-  border: none;
-  background: #28a745;
-  color: white;
-  cursor: pointer;
-  border-radius: 4px;
+        &:hover {
+          background: #ddd;
+        }
+      }
+    }
+  }
 }

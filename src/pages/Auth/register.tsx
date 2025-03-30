@@ -5,6 +5,7 @@ import { useForm, Controller } from "react-hook-form";
 import Authentication from "../../services/authentication.ts";
 
 type RegisterForm = {
+  name: string;
   email: string;
   password: string;
 };
@@ -14,7 +15,7 @@ export default function Register() {
 
   const onSubmit = async (data: RegisterForm) => {
     Authentication.register(data).then((resp) => {
-      console.log("Usuário cadastrado:", resp);
+      window.location.href="/login"
     }).catch((error) => {
       console.error("Erro ao cadastrar:", error);
     });
@@ -26,6 +27,23 @@ export default function Register() {
         <div className={styles.formBox}>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Controller
+                  name="name"
+                  control={control}
+                  rules={{ required: "Nome obrigatório" }}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      fullWidth
+                      label="Nome"
+                      placeholder="Digite seu nome completo"
+                      required
+                    />
+                  )}
+                />
+              </Grid>
+
               <Grid item xs={12}>
                 <Controller
                   name="email"
