@@ -78,18 +78,17 @@
     margin-bottom: 8px;
   }
 
-  .expandButton {
-    background: none;
-    border: none;
-    font-size: 14px;
-    cursor: pointer;
+  .detailLink {
+    text-decoration: none;
+    color: #1976d2;
+    font-size: 1rem;
     display: flex;
     align-items: center;
-    gap: 6px;
-    margin-top: auto;
+    gap: 4px;
+    transition: color 0.2s;
 
     &:hover {
-      text-decoration: underline;
+      color: #115293;
     }
   }
 }

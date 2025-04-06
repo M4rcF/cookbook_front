@@ -2,13 +2,11 @@ import React, { useEffect } from 'react';
 import { useState } from "react";
 import { RiInformation2Line } from "react-icons/ri";
 import styles from './styles.module.scss';
-import RecipeDetailsModal from "../../components/RecipeDetailsModal/index.tsx";
 import Pagination from "../../components/Pagination/index.tsx";
 import RecipeService from '../../services/recipeService.ts';
 import { FiSearch } from "react-icons/fi";
 
 export default function Home() {
-  const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [recipes, setRecipes] = useState([]);
 
@@ -49,22 +47,17 @@ export default function Home() {
               <div className={styles.cardContent}>
                 <h3>{recipe.name}</h3>
                 <p className={styles.category}>{recipe.category} • {recipe.origin}</p>
-                <button className={styles.expandButton} onClick={() => setSelectedRecipe(recipe)}>
+                <a
+                  className={styles.detailLink}
+                  href={`/recipe/${recipe.id}`}
+                >
                   <RiInformation2Line size={18} /> More details
-                </button>
+                </a>
                 <br/>
               </div>
             </div>
           ))}
         </div>
-      )}
-
-
-      {selectedRecipe && (
-        <RecipeDetailsModal
-          recipe={selectedRecipe}
-          onClose={() => setSelectedRecipe(null)}
-        />
       )}
     </div>
   );

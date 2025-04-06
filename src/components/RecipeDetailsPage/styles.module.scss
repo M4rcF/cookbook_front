@@ -1,0 +1,135 @@
+.container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+
+  p, li {
+    font-size: 13px;
+  }
+
+  .recipeDetails {
+    margin-bottom: 32px;
+    padding: 16px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  
+    img {
+      width: 100%;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+  
+    .recipeInfo {
+      padding: 0 16px;
+  
+      h2 {
+        margin-top: 0;
+        font-size: 2rem;
+        color: #333;
+      }
+  
+      .meta {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 16px;
+      }
+  
+      h3 {
+        margin-bottom: 8px;
+        font-size: 1.25rem;
+        color: #444;
+      }
+  
+      .ingredientsList {
+        list-style: disc;
+        padding-left: 20px;
+        margin: 0;
+  
+        li {
+          margin-bottom: 4px;
+        }
+      }
+  
+      .userReviewSection {
+        margin-top: 24px;
+        text-align: center;
+        padding: 16px;
+        border-radius: 8px;
+  
+        .userReview {
+          margin-bottom: 16px;
+        }
+  
+        .reviewButtons {
+          display: flex;
+          gap: 8px;
+          margin-top: 8px;
+          justify-content: center;
+        }
+  
+        .reviewForm {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          margin-top: 16px;
+        }
+  
+        .formActions {
+          display: flex;
+          justify-content: center;
+          gap: 8px;
+        }
+      }
+    }
+  }
+  
+  .reviewsSection {
+    border-top: 1px solid #ddd;
+    padding: 16px;
+    border-radius: 8px;
+    margin-top: 32px;
+    background-color: #fff;
+  
+    h2 {
+      margin-top: 0;
+      font-size: 1.75rem;
+      color: #333;
+    }
+  
+    .reviewItem {
+      border-bottom: 1px solid #eee;
+      padding: 12px 0;
+  
+      .reviewHeader {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+  
+        span {
+          font-size: 1rem;
+          color: #333;
+        }
+  
+        .reviewDates {
+          font-size: 0.8rem;
+          color: #777;
+          text-align: right;
+        }
+      }
+  
+      p {
+        margin: 0;
+        font-size: 0.95rem;
+        color: #555;
+      }
+    }
+  
+    .paginationContainer {
+      margin-top: 16px;
+      display: flex;
+      justify-content: center;
+    }
+  }
+}

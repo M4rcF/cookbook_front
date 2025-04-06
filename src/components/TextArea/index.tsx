@@ -6,6 +6,7 @@ type InputTextProps = {
   onChange: any;
   required?: boolean;
   value?: any;
+  maxLength?: number;
 }
 
 export default function TextArea(props: InputTextProps) {
@@ -15,7 +16,7 @@ export default function TextArea(props: InputTextProps) {
       <textarea
         onChange={props.onChange}
         required={props.required}
-        maxLength={1500}
+        maxLength={props.maxLength || 1500}
         value={props.value}
       />
     </div>

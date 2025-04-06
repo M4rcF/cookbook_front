@@ -12,6 +12,7 @@ import RecipeList from "./pages/RecipeList/index.tsx";
 import Faq from "./pages/Faq/index.tsx";
 import Login from "./pages/Auth/login.tsx";
 import Register from "./pages/Auth/register.tsx";
+import RecipeDetailsPage from './components/RecipeDetailsPage/index.tsx'
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
               <Route path="/search" element={<Search />} />
               <Route path="/list" element={<RecipeList />} />
               <Route path="/faq" element={<Faq />} />
+              <Route path="/recipe/:id" element={<RecipeDetailsPage />} />
             </Route>
           </Routes>
         </Layout>
