@@ -46,8 +46,6 @@ export default function RecipeEditModal({ recipe, onClose, onSave }) {
   }, []);
 
   useEffect(() => {
-    console.log('recipe', recipe);
-
     if (recipe) {
       reset({
         id: recipe.id,

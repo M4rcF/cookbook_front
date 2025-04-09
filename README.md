@@ -1,70 +1,88 @@
-# Getting Started with Create React App
+# Cookbook - Front-end
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+O **Cookbook** é o front-end de um projeto de receitas feito na pós-graduação. A ideia é ter um lugar para cadastrar, editar, ver e avaliar receitas de forma prática.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🚀 Instruções de instalação
 
-### `npm start`
+Siga os passos abaixo para rodar o projeto localmente:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### 1. Pré-requisitos
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Antes de tudo, certifique-se de que você tem instalado:
 
-### `npm test`
+- [Node.js](https://nodejs.org/) (versão compatível: 19.2.0 ou superior)
+- [NPM](https://www.npmjs.com/)
+- [Git](https://git-scm.com/)
+- (Opcional) [Docker](https://www.docker.com/) se quiser rodar o projeto em container
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 2. Clonar o repositório
 
-### `npm run build`
+```bash
+git clone <URL_DO_REPOSITORIO>
+cd <nome-do-repo>
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 3. Instalar dependências
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+npm install
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 4. Rodar o projeto localmente
 
-### `npm run eject`
+```bash
+npm start
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+O app vai estar disponível em: http://localhost:3000
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 🐳 Rodando com Docker (opcional)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Se preferir usar Docker:
 
-## Learn More
+```bash
+docker build -t cookbook-frontend .
+docker run -p 3000:3000 cookbook-frontend
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+**Certifique-se de que o backend esteja rodando em paralelo.**
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+## 🌐 API Externa Utilizada
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Este projeto utiliza a API pública [TheMealDB](https://www.themealdb.com/) para obter informações como categorias e origens de receitas. Essa API é usada para facilitar o preenchimento de formulários e também para realizar buscas externas de receitas.
 
-### Analyzing the Bundle Size
+### 📄 Licença de Uso
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- A TheMealDB é uma API gratuita para uso pessoal ou educacional.
+- Não requer chave de API para endpoints públicos.
+- Para uso comercial ou acesso premium, existe uma versão paga com mais recursos.
 
-### Making a Progressive Web App
+### 🔐 Cadastro
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- Não é necessário realizar cadastro para usar os endpoints utilizados neste projeto.
 
-### Advanced Configuration
+### 🔗 Endpoints Utilizados
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Os principais endpoints consumidos são:
 
-### Deployment
+- **Listar categorias**  
+  `GET https://www.themealdb.com/api/json/v1/1/list.php?c=list`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- **Listar origens (áreas)**  
+  `GET https://www.themealdb.com/api/json/v1/1/list.php?a=list`
 
-### `npm run build` fails to minify
+- **Buscar receita por ID**  
+  `GET https://www.themealdb.com/api/json/v1/1/lookup.php?i={idMeal}`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- **Buscar receita por nome**  
+  `GET https://www.themealdb.com/api/json/v1/1/search.php?s={nome}`
+
+## 🧭 Arquitetura da Aplicação
+
+![Arquitetura da aplicação](public/diagrama.png)

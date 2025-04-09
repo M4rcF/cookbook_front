@@ -1,11 +1,10 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:5000", // ou sua URL real
+  baseURL: "http://localhost:5000",
 });
 const fullUrl = window.location.href;
 
-// ✅ Interceptor para incluir o token no header
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
 
@@ -16,16 +15,16 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// ✅ Interceptor para capturar erro 401 (token expirado)
 api.interceptors.response.use(
-  (response) => response, // sucesso
+  (response) => response,
   (error) => {
-    if (error.response?.status === 401 && !fullUrl.includes('/login')) {
+    console.log('error', error);
+    if (![201, 200].includes(error.response?.status) && !fullUrl.includes('/login')) {
       localStorage.removeItem("token");
-      window.location.href = "/login"; // redireciona
+      window.location.href = "/login";
     }
 
-    return Promise.reject(error); // mantém o erro para que o caller trate se quiser
+    return Promise.reject(error);
   }
 );
 

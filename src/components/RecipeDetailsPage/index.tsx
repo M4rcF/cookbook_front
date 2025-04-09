@@ -81,8 +81,6 @@ export default function RecipeDetailsPage() {
   const onReviewSubmit = (form: any) => {
     const data = { ...form, recipe_id: Number(id) }
 
-    console.log('data', data);
-
     if (userReview) {
       RecipeService.updateReview(userReview.id, data)
         .then((resp) => {

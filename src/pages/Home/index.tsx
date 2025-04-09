@@ -5,8 +5,10 @@ import styles from './styles.module.scss';
 import Pagination from "../../components/Pagination/index.tsx";
 import RecipeService from '../../services/recipeService.ts';
 import { FiSearch } from "react-icons/fi";
+import useSnackbar from '../../hooks/useSnackbar.ts';
 
 export default function Home() {
+  const { showSnackbar } = useSnackbar();
   const [currentPage, setCurrentPage] = useState(1);
   const [recipes, setRecipes] = useState([]);
 
@@ -21,7 +23,11 @@ export default function Home() {
     RecipeService.getAllRecipes()
       .then((resp) => {
         setRecipes(resp.recipes);
-      });
+      })
+      .catch((error) => {
+        console.log('error', error)
+        showSnackbar(error.response.data.message, 'error');
+      });;
   }, [])
 
   return (

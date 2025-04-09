@@ -4,7 +4,7 @@ import { LogOut, Edit } from "lucide-react";
 import styles from "./styles.module.scss";
 import Authentication from "../../services/authentication.ts";
 import useSnackbar from "../../hooks/useSnackbar.ts";
-import EditProfileModal from "../EditProfileModal/index.tsx"; // ajuste o caminho conforme sua estrutura
+import EditProfileModal from "../EditProfileModal/index.tsx";
 
 interface TopbarProps {
   isSidebarExpanded: boolean;

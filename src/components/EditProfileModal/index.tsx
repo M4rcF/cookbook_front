@@ -22,7 +22,7 @@ export default function EditProfileModal({ user, isOpen, onClose }: EditProfileM
 
   const submit = async (form: EditProfileFormData) => {
     await UserService.updateUser(user.id, form);
-    onClose(); // Fecha após salvar
+    onClose();
   };
 
   if (!isOpen) return null;

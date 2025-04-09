@@ -27,6 +27,7 @@ export default function RecipeList() {
         setRecipes(resp.recipes);
       })
       .catch((error) => {
+        console.log('error', error)
         showSnackbar(error.response.data.message, 'error');
       });
   };

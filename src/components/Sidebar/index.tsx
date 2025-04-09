@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { FaClipboardList, FaUtensils } from "react-icons/fa6";
 import { MdContactSupport } from "react-icons/md";
 import styles from "./styles.module.scss";
+import Show from "../Show/index.tsx";
 
 interface SidebarProps {
   setIsSidebarExpanded: (expanded: boolean) => void;
@@ -20,10 +21,8 @@ export default function Sidebar({ setIsSidebarExpanded }: SidebarProps) {
     setIsSidebarExpanded(!expanded);
   };
 
-  console.log('user', user);
-
   return (
-    <>
+    <Show condition={!!token}>
       {expanded && (
         <div className={styles.overlay} onClick={toggleSidebar}></div>
       )}
@@ -80,6 +79,6 @@ export default function Sidebar({ setIsSidebarExpanded }: SidebarProps) {
           </div>
         )
       }
-    </>
+    </Show>
   );
 }

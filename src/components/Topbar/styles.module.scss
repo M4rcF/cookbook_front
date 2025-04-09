@@ -9,7 +9,7 @@
   position: fixed;
   top: 0;
   z-index: 1000;
-  background: white;
+  background: #ffffff;
 
   &.collapsed {
     width: 100%;
@@ -36,7 +36,7 @@
       position: absolute;
       top: 50px;
       right: 0;
-      background: white;
+      background: #ffffff;
       color: black;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       border-radius: 4px;
