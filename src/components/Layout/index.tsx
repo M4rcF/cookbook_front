@@ -1,10 +1,13 @@
-import React from 'react';
-import { useState } from "react";
-import Sidebar from "../Sidebar/index.tsx";
-import Topbar from "../Topbar/index.tsx";
+import { useState, ReactNode } from "react";
+import Sidebar from "../Sidebar/index";
+import Topbar from "../Topbar/index";
 import styles from './styles.module.scss';
 
-export default function Layout({ children }) {
+type LayoutProps = {
+  children: ReactNode;
+}
+
+export default function Layout(props: LayoutProps) {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
 
   return (
@@ -12,7 +15,7 @@ export default function Layout({ children }) {
       <Sidebar setIsSidebarExpanded={setIsSidebarExpanded} />
       <div className={styles.content}>
         <Topbar isSidebarExpanded={isSidebarExpanded} />
-        { children }
+        { props.children }
       </div>
     </div>
   )

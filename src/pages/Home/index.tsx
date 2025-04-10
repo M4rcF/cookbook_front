@@ -1,11 +1,12 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useState } from "react";
 import { RiInformation2Line } from "react-icons/ri";
 import styles from './styles.module.scss';
-import Pagination from "../../components/Pagination/index.tsx";
-import RecipeService from '../../services/recipeService.ts';
+import Pagination from "../../components/Pagination/index";
+import RecipeService from '../../services/recipeService';
 import { FiSearch } from "react-icons/fi";
-import useSnackbar from '../../hooks/useSnackbar.ts';
+import useSnackbar from '../../hooks/useSnackbar';
+import { Recipe } from '../../@types/model';
 
 export default function Home() {
   const { showSnackbar } = useSnackbar();
@@ -47,7 +48,7 @@ export default function Home() {
         </div>
       ) : (
         <div className={styles.recipeGrid}>
-          {paginatedRecipes.map((recipe: any) => (
+          {paginatedRecipes.map((recipe: Recipe) => (
             <div key={recipe.name} className={styles.card}>
               <img src={recipe.image_url} alt={recipe.name} />
               <div className={styles.cardContent}>

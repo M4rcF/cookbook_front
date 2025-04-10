@@ -1,7 +1,8 @@
-import api from "./api.ts";
+import { User } from "../@types/model";
+import api from "./api";
 
 const Authentication = {
-  login: async (credentials: { email: string, password: string }) => {
+  login: async (credentials: User) => {
     const response = await api.post("/api/auth/login", credentials);
     const { token, user } = response.data;
   
@@ -11,7 +12,7 @@ const Authentication = {
     return !!token
   },
 
-  register: async (userData: any) => {
+  register: async (userData: User) => {
     const res = await api.post("/api/auth/sign_up", userData);
     return res.data;
   },

@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styles from '../styles.module.scss';
-import Pagination from '../../Pagination/index.tsx';
+import Pagination from '../../Pagination/index';
+import { Review } from '../../../@types/model';
 
 type OtherReviewsProps = {
-  reviews: any;
+  reviews: Review[];
 }
 
 export default function OtherReviews(props: OtherReviewsProps) {
   const user = JSON.parse(localStorage.getItem("currentUser") || '{}');
-  const otherReviews = props.reviews.filter((r) => r.user_id !== user.id);
+  const otherReviews = props.reviews.filter((r: Review) => r.user_id !== user.id);
 
   const [currentReviewPage, setCurrentReviewPage] = useState<number>(1);
   const reviewsPerPage = 5;
@@ -24,7 +25,7 @@ export default function OtherReviews(props: OtherReviewsProps) {
   <div className={styles.reviewsSection}>
     <h2>Other Reviews</h2>
     {paginatedReviews.length > 0 ? (
-      paginatedReviews.map((r) => (
+      paginatedReviews.map((r: Review) => (
         <div key={r.id} className={styles.reviewItem}>
           <div className={styles.reviewHeader}>
             <span>Rating: {r.rating} ⭐</span>

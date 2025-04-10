@@ -1,4 +1,5 @@
-import api from "./api.ts";
+import { Recipe, Review } from "../@types/model";
+import api from "./api";
 
 const RecipeService = {
   getAllRecipes: async () => {
@@ -11,12 +12,12 @@ const RecipeService = {
     return response.data;
   },
 
-  createRecipe: async (data: any) => {
+  createRecipe: async (data: Recipe) => {
     const response = await api.post("/api/recipes", data);
     return response.data;
   },
 
-  updateRecipe: async (data: any) => {
+  updateRecipe: async (data: Recipe) => {
     const response = await api.put(`/api/recipes/${data.id}`, data);
     return response.data;
   },
@@ -36,12 +37,12 @@ const RecipeService = {
     return response.data;
   },
 
-  createReview: async (data: any) => {
+  createReview: async (data: Review) => {
     const response = await api.post("/api/reviews", data);
     return response.data;
   },
 
-  updateReview: async (reviewId: number, data: any) => {
+  updateReview: async (reviewId: number, data: Review) => {
     const response = await api.put(`/api/reviews/${reviewId}`, data);
     return response.data;
   },

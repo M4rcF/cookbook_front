@@ -1,22 +1,22 @@
 import { useState, useEffect } from "react";
 import axios from 'axios';
-import React from 'react';
 import styles from './styles.module.scss';
 import { useForm, Controller } from "react-hook-form";
 import { Button, FormControlLabel, Grid, Switch } from '@mui/material';
-import InputText from "../../components/InputText/index.tsx";
-import Select from "../../components/Select/index.tsx";
-import TextArea from "../../components/TextArea/index.tsx";
-import MultipleOptions from "../../components/MultipleOptions/index.tsx";
-import RecipeService from "../../services/recipeService.ts";
-import useSnackbar from "../../hooks/useSnackbar.ts";
+import InputText from "../../components/InputText/index";
+import Select from "../../components/Select/index";
+import TextArea from "../../components/TextArea/index";
+import MultipleOptions from "../../components/MultipleOptions/index";
+import RecipeService from "../../services/recipeService";
+import useSnackbar from "../../hooks/useSnackbar";
+import { Area, Category } from "../../@types/model";
 
 export default function New() {
   const { showSnackbar } = useSnackbar();
   const { control, handleSubmit, reset, watch } = useForm();
 
-  const [categories, setCategories] = useState([]);
-  const [areas, setAreas] = useState([]);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [areas, setAreas] = useState<string[]>([]);
 
   const submit = (form: any) => {
     RecipeService.createRecipe(form)
@@ -55,10 +55,10 @@ export default function New() {
 
   useEffect(() => {
     axios.get("https://www.themealdb.com/api/json/v1/1/list.php?c=list")
-      .then(res => setCategories(res.data.meals.map(c => c.strCategory)));
+      .then(res => setCategories(res.data.meals.map((c: Category) => c.strCategory)));
 
     axios.get("https://www.themealdb.com/api/json/v1/1/list.php?a=list")
-      .then(res => setAreas(res.data.meals.map(a => a.strArea)));
+      .then(res => setAreas(res.data.meals.map((a: Area) => a.strArea)));
   }, []);
 
   return (

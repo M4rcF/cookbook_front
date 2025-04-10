@@ -1,31 +1,13 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Grid, Button, Rating } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
-import RecipeService from "../../services/recipeService.ts";
-import OtherReviews from "./OtherReivews/index.tsx";
-import TextArea from "../TextArea/index.tsx";
+import RecipeService from "../../services/recipeService";
+import OtherReviews from "./OtherReivews/index";
+import TextArea from "../TextArea/index";
 import styles from "./styles.module.scss";
-import useSnackbar from "../../hooks/useSnackbar.ts";
-
-export type Recipe = {
-  id: number;
-  name: string;
-  image_url: string;
-  category: string;
-  origin: string;
-  instructions: string;
-  ingredients: string[];
-};
-
-export type Review = {
-  id: number;
-  rating: number;
-  comment: string;
-  created_at: string;
-  updated_at: string;
-  user_id?: number;
-};
+import useSnackbar from "../../hooks/useSnackbar";
+import { Recipe, Review } from "../../@types/model";
 
 export default function RecipeDetailsPage() {
   const { id } = useParams<{ id: string }>();
@@ -68,7 +50,7 @@ export default function RecipeDetailsPage() {
     RecipeService.getReviews(recipeId)
       .then((data: { reviews: Review[] }) => {
         setReviews(data.reviews);
-        const existing = data.reviews.find((r) => r.user_id === user.id);
+        const existing = data.reviews.find((r) => r.user_id === user.id && r.recipe_id === Number(id));
         if (existing) {
           setUserReview(existing);
         }
@@ -162,7 +144,6 @@ export default function RecipeDetailsPage() {
                     <Controller
                       name="rating"
                       control={control}
-                      rules={{ required: "Rating is required" }}
                       defaultValue={userReview ? userReview.rating : 0}
                       render={({ field }) => (
                         <Rating

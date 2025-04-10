@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import axios from "axios";
 import styles from "./styles.module.scss";
 import { Button, Grid } from "@mui/material";
 import { FiSearch } from "react-icons/fi";
-import InputText from '../../components/InputText/index.tsx';
-import Select from '../../components/Select/index.tsx';
-import Pagination from '../../components/Pagination/index.tsx';
-import useSnackbar from "../../hooks/useSnackbar.ts";
-import RecipeService from '../../services/recipeService.ts';
-import RecipeDetailsModal from '../../components/RecipeDetailsModal/index.tsx';
+import InputText from '../../components/InputText/index';
+import Select from '../../components/Select/index';
+import Pagination from '../../components/Pagination/index';
+import useSnackbar from "../../hooks/useSnackbar";
+import RecipeService from '../../services/recipeService';
+import RecipeDetailsModal from '../../components/RecipeDetailsModal/index';
+import { Area, Category, Recipe } from '../../@types/model';
 
 export default function Search() {
   const { control, handleSubmit } = useForm();
@@ -29,9 +30,9 @@ export default function Search() {
 
   useEffect(() => {
     axios.get("https://www.themealdb.com/api/json/v1/1/list.php?c=list")
-      .then(res => setCategories(res.data.meals.map(c => c.strCategory)));
+      .then(res => setCategories(res.data.meals.map((c: Category) => c.strCategory)));
     axios.get("https://www.themealdb.com/api/json/v1/1/list.php?a=list")
-      .then(res => setAreas(res.data.meals.map(a => a.strArea)));
+      .then(res => setAreas(res.data.meals.map((a: Area) => a.strArea)));
   }, []);
 
   const getMealDetails = async (id: string) => {
@@ -51,7 +52,7 @@ export default function Search() {
   };
 
   const getIngredients = (meal: any) => {
-    const ingredients: any[] = [];
+    const ingredients: string[] = [];
     for (let i = 1; i <= 20; i++) {
       const name = meal[`strIngredient${i}`];
       const measure = meal[`strMeasure${i}`];
@@ -77,7 +78,7 @@ export default function Search() {
 
   const submit = async (form: any) => {
     try {
-      let meals: any[] = [];
+      let meals: Recipe[] = [];
 
       if (form.name) {
         const res = await axios.get(`https://www.themealdb.com/api/json/v1/1/search.php?s=${form.name}`);

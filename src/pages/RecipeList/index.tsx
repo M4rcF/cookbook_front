@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './styles.module.scss';
-import RecipeEditModal from '../../components/RecipeEditModal/index.tsx';
-import Pagination from '../../components/Pagination/index.tsx';
+import RecipeEditModal from '../../components/RecipeEditModal/index';
+import Pagination from '../../components/Pagination/index';
 import { RiEdit2Line, RiInformation2Line } from 'react-icons/ri';
 import { MdDeleteOutline } from 'react-icons/md';
 import { Grid, Button } from '@mui/material';
-import RecipeService from '../../services/recipeService.ts';
-import useSnackbar from '../../hooks/useSnackbar.ts';
+import RecipeService from '../../services/recipeService';
+import useSnackbar from '../../hooks/useSnackbar';
 import { FiSearch } from 'react-icons/fi';
+import { Recipe } from '../../@types/model';
 
 export default function RecipeList() {
   const { showSnackbar } = useSnackbar();
-  const [recipe, setRecipe] = useState(null);
+  const [recipe, setRecipe] = useState<Recipe>();
   const [currentPage, setCurrentPage] = useState(1);
-  const [recipes, setRecipes] = useState([]);
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
 
   const itemsPerPage = 6;
   const paginatedRecipes = recipes.slice(
@@ -32,7 +33,7 @@ export default function RecipeList() {
       });
   };
 
-  const editRecipe = (recipeToEdit) => {
+  const editRecipe = (recipeToEdit: Recipe) => {
     RecipeService.updateRecipe(recipeToEdit)
       .then((resp) => {
         showSnackbar(resp.message, 'success');
@@ -70,7 +71,7 @@ export default function RecipeList() {
       />
 
       <Grid container spacing={2} className={styles.cards}>
-        {paginatedRecipes.map((recipe: any, i) => (
+        {paginatedRecipes.map((recipe: Recipe, i) => (
           <Grid item xs={12} sm={6} md={4} key={i}>
             <div className={styles.card}>
               <div className={styles.cardImageContainer}>
@@ -119,8 +120,8 @@ export default function RecipeList() {
       {recipe && (
         <RecipeEditModal
           recipe={recipe}
-          onClose={() => setRecipe(null)}
-          onSave={(e) => editRecipe(e)}
+          onClose={() => setRecipe(undefined)}
+          onSave={(e: Recipe) => editRecipe(e)}
         />
       )}
     </div>

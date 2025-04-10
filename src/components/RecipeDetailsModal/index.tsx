@@ -1,7 +1,13 @@
 import { motion } from "framer-motion";
 import styles from "./styles.module.scss";
+import { Recipe } from "../../@types/model";
 
-export default function RecipeDetailsModal({ recipe, onClose }) {
+type RecipeDetailsModalProps = {
+  recipe: Recipe;
+  onClose: () => void;
+}
+
+export default function RecipeDetailsModal(props: RecipeDetailsModalProps) {
   return (
     <div className={styles.modalOverlay}>
       <motion.div
@@ -11,25 +17,25 @@ export default function RecipeDetailsModal({ recipe, onClose }) {
         transition={{ duration: 0.2 }}
       >
         <div className={styles.imageContainer}>
-          <img src={recipe.image_url} alt={recipe.name} />
+          <img src={props.recipe.image_url} alt={props.recipe.name} />
         </div>
 
         <div className={styles.info}>
           <div className={styles.header}>
-            <h2>{recipe.name}</h2>
-            <button className={styles.closeButton} onClick={onClose}>×</button>
+            <h2>{props.recipe.name}</h2>
+            <button className={styles.closeButton} onClick={props.onClose}>×</button>
           </div>
 
-          <p><strong>Categoria:</strong> {recipe.category}</p>
-          <p><strong>Origem:</strong> {recipe.origin}</p>
+          <p><strong>Category:</strong> {props.recipe.category}</p>
+          <p><strong>Origin:</strong> {props.recipe.origin}</p>
 
-          <p><strong>Modo de preparo:</strong></p>
-          <p>{recipe.instructions}</p>
+          <p><strong>Instructions:</strong></p>
+          <p>{props.recipe.instructions}</p>
 
-          <h4>Ingredientes:</h4>
+          <h4>Ingredients:</h4>
           <ul>
-            {recipe.ingredients.map((ing, i) => (
-              <li key={i}>{ing}</li>
+            {props.recipe.ingredients.map((ing: string, index: number) => (
+              <li key={index}>{ing}</li>
             ))}
           </ul>
         </div>

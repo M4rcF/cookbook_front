@@ -1,12 +1,12 @@
-import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Grid, Button, IconButton } from "@mui/material";
 import styles from "./styles.module.scss";
 import InputText from "../../components/InputText/index.tsx";
-import UserService from "../../services/user.ts";
+import UserService from "../../services/user";
+import { User } from "../../@types/model";
 
 interface EditProfileModalProps {
-  user: any;
+  user: User;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -17,22 +17,24 @@ interface EditProfileFormData {
   password: string;
 }
 
-export default function EditProfileModal({ user, isOpen, onClose }: EditProfileModalProps) {
+export default function EditProfileModal(props: EditProfileModalProps) {
   const { control, handleSubmit } = useForm<EditProfileFormData>();
 
   const submit = async (form: EditProfileFormData) => {
-    await UserService.updateUser(user.id, form);
-    onClose();
+    if (props.user.id) {
+      await UserService.updateUser(props.user.id, form);
+      props.onClose();
+    }
   };
 
-  if (!isOpen) return null;
+  if (!props.isOpen) return null;
 
   return (
     <div className={styles.modalOverlay}>
       <div className={styles.modal}>
         <div className={styles.modalHeader}>
           <h2>Edit Profile</h2>
-          <IconButton className={styles.closeButton} onClick={onClose}>
+          <IconButton className={styles.closeButton} onClick={props.onClose}>
             &times;
           </IconButton>
         </div>
@@ -43,8 +45,7 @@ export default function EditProfileModal({ user, isOpen, onClose }: EditProfileM
               <Controller
                 name="name"
                 control={control}
-                defaultValue={user.name}
-                rules={{ required: "Name is required" }}
+                defaultValue={props.user.name}
                 render={({ field }) => (
                   <InputText {...field} label="Name" required />
                 )}
@@ -54,8 +55,7 @@ export default function EditProfileModal({ user, isOpen, onClose }: EditProfileM
               <Controller
                 name="email"
                 control={control}
-                defaultValue={user.email}
-                rules={{ required: "Email is required" }}
+                defaultValue={props.user.email}
                 render={({ field }) => (
                   <InputText {...field} label="Email" required />
                 )}
@@ -66,14 +66,13 @@ export default function EditProfileModal({ user, isOpen, onClose }: EditProfileM
                 name="password"
                 control={control}
                 defaultValue=""
-                rules={{ required: "Password is required" }}
                 render={({ field }) => (
                   <InputText {...field} label="Password" type="password" required />
                 )}
               />
             </Grid>
             <Grid item xs={12} className={styles.modalActions}>
-              <Button type="button" onClick={onClose} className={styles.cancelButton}>
+              <Button type="button" onClick={props.onClose} className={styles.cancelButton}>
                 Cancel
               </Button>
               <Button type="submit" className={styles.saveButton}>

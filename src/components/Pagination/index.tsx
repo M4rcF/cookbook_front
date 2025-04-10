@@ -1,7 +1,10 @@
-import React from 'react';
 import styles from './styles.module.scss';
-import { MdOutlineKeyboardDoubleArrowLeft, MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight, MdKeyboardDoubleArrowRight } from "react-icons/md";
-
+import {
+  MdOutlineKeyboardDoubleArrowLeft,
+  MdOutlineKeyboardArrowLeft,
+  MdOutlineKeyboardArrowRight,
+  MdKeyboardDoubleArrowRight
+} from "react-icons/md";
 
 interface PaginationProps {
   currentPage: number;
@@ -10,42 +13,37 @@ interface PaginationProps {
   onPageChange: (page: number) => void;
 }
 
-export default function Pagination({
-  currentPage,
-  totalItems,
-  itemsPerPage,
-  onPageChange,
-}: PaginationProps) {
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
+export default function Pagination(props: PaginationProps) {
+  const totalPages = Math.ceil(props.totalItems / props.itemsPerPage);
   if (totalPages <= 1) return null;
 
   const pages = [...Array(totalPages)].map((_, i) => i + 1);
 
   return (
     <div className={styles.pagination}>
-      <button onClick={() => onPageChange(1)} disabled={currentPage === 1}>
+      <button onClick={() => props.onPageChange(1)} disabled={props.currentPage === 1}>
         <MdOutlineKeyboardDoubleArrowLeft />
       </button>
 
-      <button onClick={() => onPageChange(currentPage - 1)} disabled={currentPage === 1}>
+      <button onClick={() => props.onPageChange(props.currentPage - 1)} disabled={props.currentPage === 1}>
         <MdOutlineKeyboardArrowLeft />
       </button>
 
       {pages.map((page) => (
         <button
           key={page}
-          onClick={() => onPageChange(page)}
-          className={page === currentPage ? styles.active : ""}
+          onClick={() => props.onPageChange(page)}
+          className={page === props.currentPage ? styles.active : ""}
         >
           {page}
         </button>
       ))}
 
-      <button onClick={() => onPageChange(currentPage + 1)} disabled={currentPage === totalPages}>
+      <button onClick={() => props.onPageChange(props.currentPage + 1)} disabled={props.currentPage === totalPages}>
         <MdOutlineKeyboardArrowRight />
       </button>
 
-      <button onClick={() => onPageChange(totalPages)} disabled={currentPage === totalPages}>
+      <button onClick={() => props.onPageChange(totalPages)} disabled={props.currentPage === totalPages}>
         <MdKeyboardDoubleArrowRight />
       </button>
     </div>

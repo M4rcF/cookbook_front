@@ -1,24 +1,24 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { FaClipboardList, FaUtensils } from "react-icons/fa6";
 import { MdContactSupport } from "react-icons/md";
 import styles from "./styles.module.scss";
-import Show from "../Show/index.tsx";
+import Show from "../Show/index";
 
 interface SidebarProps {
   setIsSidebarExpanded: (expanded: boolean) => void;
 }
 
-export default function Sidebar({ setIsSidebarExpanded }: SidebarProps) {
+export default function Sidebar(props: SidebarProps) {
   const token = localStorage.getItem("token");
   const [expanded, setExpanded] = useState(false);
   const user = JSON.parse(localStorage.getItem("currentUser") || '{}');
 
   const toggleSidebar = () => {
     setExpanded(!expanded);
-    setIsSidebarExpanded(!expanded);
+    props.setIsSidebarExpanded(!expanded);
   };
 
   return (

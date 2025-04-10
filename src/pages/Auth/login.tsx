@@ -1,31 +1,27 @@
-import React from "react";
 import styles from "./styles.module.scss";
-import { Button, Grid, TextField } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
-import Authentication from "../../services/authentication.ts";
-import useSnackbar from "../../hooks/useSnackbar.ts";
-
-type LoginFormData = {
-  email: string;
-  password: string;
-};
+import Authentication from "../../services/authentication";
+import useSnackbar from "../../hooks/useSnackbar";
+import InputText from "../../components/InputText/index";
+import { User } from "../../@types/model";
 
 export default function Login() {
-  const { handleSubmit, control } = useForm<LoginFormData>();
+  const { handleSubmit, control } = useForm<User>();
   const { showSnackbar } = useSnackbar();
 
-  const onSubmit = (data: LoginFormData) => {
-    Authentication.login(data).then((resp) => {
-      if (resp) {
+  const onSubmit = (data: User) => {
+    Authentication.login(data)
+      .then(() => {
         window.location.href = "/";
-      }
-    }).catch((error) => {
-      showSnackbar(error.response.data.message, 'error');
-    });
+      })
+      .catch((error) => {
+        showSnackbar(error.response.data.message, "error");
+      });
   };
 
   return (
-    <div className={styles.authContainer}>
+    <div className={styles.container}>
       <div className={styles.left}>
         <img src="/logo.svg" alt="Ilustração" />
       </div>
@@ -38,13 +34,12 @@ export default function Login() {
                 <Controller
                   name="email"
                   control={control}
-                  rules={{ required: "Email obrigatório" }}
                   render={({ field }) => (
-                    <TextField
+                    <InputText
                       {...field}
                       label="Email"
-                      placeholder="Seu e-mail"
-                      fullWidth
+                      placeholder="Your e-mail"
+                      type="email"
                       required
                     />
                   )}
@@ -55,14 +50,12 @@ export default function Login() {
                 <Controller
                   name="password"
                   control={control}
-                  rules={{ required: "Senha obrigatória" }}
                   render={({ field }) => (
-                    <TextField
+                    <InputText
                       {...field}
-                      label="Senha"
+                      label="Password"
+                      placeholder="Your password"
                       type="password"
-                      placeholder="Sua senha"
-                      fullWidth
                       required
                     />
                   )}
@@ -70,21 +63,15 @@ export default function Login() {
               </Grid>
 
               <Grid item xs={12}>
-                <div className={styles.links}>
-                  <a href="#">Esqueceu a senha?</a>
-                </div>
-              </Grid>
-
-              <Grid item xs={12}>
                 <Button type="submit" variant="contained" fullWidth>
-                  Acessar
+                  Log-in
                 </Button>
               </Grid>
             </Grid>
           </form>
 
           <footer>
-            <p>Não possui conta? <a href="/register">Criar conta</a></p>
+            <p>Don't have an account? <a href="/register">Sign-up</a></p>
           </footer>
         </div>
       </div>

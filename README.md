@@ -45,8 +45,8 @@ O app vai estar disponível em: http://localhost:3000
 Se preferir usar Docker:
 
 ```bash
-docker build -t cookbook-frontend .
-docker run -p 3000:3000 cookbook-frontend
+sudo docker build -t cookbook-frontend .
+sudo docker run -p 3000:3000 cookbook-frontend
 ```
 
 **Certifique-se de que o backend esteja rodando em paralelo.**

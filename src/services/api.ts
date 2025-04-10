@@ -18,9 +18,9 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.log('error', error);
     if (![201, 200].includes(error.response?.status) && !fullUrl.includes('/login')) {
       localStorage.removeItem("token");
+      localStorage.removeItem("currentUser");
       window.location.href = "/login";
     }
 

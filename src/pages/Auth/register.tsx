@@ -1,31 +1,32 @@
 import React from "react";
 import styles from "./styles.module.scss";
-import { Button, Grid, TextField } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
-import Authentication from "../../services/authentication.ts";
-
-type RegisterForm = {
-  name: string;
-  email: string;
-  password: string;
-};
+import Authentication from "../../services/authentication";
+import InputText from "../../components/InputText/index";
+import useSnackbar from "../../hooks/useSnackbar";
+import { User } from "../../@types/model";
 
 export default function Register() {
-  const { handleSubmit, control } = useForm<RegisterForm>();
+  const { handleSubmit, control } = useForm<User>();
+  const { showSnackbar } = useSnackbar();
 
-  const onSubmit = async (data: RegisterForm) => {
-    Authentication.register(data).then((resp) => {
-      window.location.href="/login"
-    }).catch((error) => {
-      console.error("Erro ao cadastrar:", error);
-    });
+  const onSubmit = (data: User) => {
+    Authentication.register(data)
+      .then(() => {
+        window.location.href = "/login";
+      })
+      .catch((error) => {
+        showSnackbar(error.response.data.message, "error");
+      });
   };
 
   return (
-    <div className={styles.authContainer}>
+    <div className={styles.container}>
       <div className={styles.left}>
-        <img src="/logo.svg" alt="Ilustração" />
+        <img src="/logo.svg" />
       </div>
+
       <div className={styles.right}>
         <div className={styles.formBox}>
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -34,13 +35,11 @@ export default function Register() {
                 <Controller
                   name="name"
                   control={control}
-                  rules={{ required: "Nome obrigatório" }}
                   render={({ field }) => (
-                    <TextField
+                    <InputText
                       {...field}
-                      fullWidth
-                      label="Nome"
-                      placeholder="Digite seu nome completo"
+                      label="Name"
+                      placeholder="Enter your full name"
                       required
                     />
                   )}
@@ -51,13 +50,11 @@ export default function Register() {
                 <Controller
                   name="email"
                   control={control}
-                  rules={{ required: "E-mail obrigatório" }}
                   render={({ field }) => (
-                    <TextField
+                    <InputText
                       {...field}
-                      fullWidth
                       label="E-mail"
-                      placeholder="exemplo@email.com"
+                      placeholder="example@email.com"
                       type="email"
                       required
                     />
@@ -69,12 +66,10 @@ export default function Register() {
                 <Controller
                   name="password"
                   control={control}
-                  rules={{ required: "Senha obrigatória" }}
                   render={({ field }) => (
-                    <TextField
+                    <InputText
                       {...field}
-                      fullWidth
-                      label="Senha"
+                      label="Password"
                       placeholder="********"
                       type="password"
                       required
@@ -85,14 +80,14 @@ export default function Register() {
 
               <Grid item xs={12}>
                 <Button type="submit" variant="contained" fullWidth>
-                  Cadastrar
+                  Sign-up
                 </Button>
               </Grid>
             </Grid>
           </form>
 
           <footer>
-            <p>Já possui conta? <a href="/login">Entrar</a></p>
+            <p>Already have an account? <a href="/login">Log-in</a></p>
           </footer>
         </div>
       </div>

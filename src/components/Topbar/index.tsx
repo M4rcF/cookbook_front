@@ -1,16 +1,16 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { PiCookingPotBold } from "react-icons/pi";
 import { LogOut, Edit } from "lucide-react";
 import styles from "./styles.module.scss";
-import Authentication from "../../services/authentication.ts";
-import useSnackbar from "../../hooks/useSnackbar.ts";
-import EditProfileModal from "../EditProfileModal/index.tsx";
+import Authentication from "../../services/authentication";
+import useSnackbar from "../../hooks/useSnackbar";
+import EditProfileModal from "../EditProfileModal/index";
 
 interface TopbarProps {
   isSidebarExpanded: boolean;
 }
 
-export default function Topbar({ isSidebarExpanded }: TopbarProps) {
+export default function Topbar(props: TopbarProps) {
   const { showSnackbar } = useSnackbar();
   const [menuOpen, setMenuOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
@@ -27,13 +27,14 @@ export default function Topbar({ isSidebarExpanded }: TopbarProps) {
         window.location.href = "/login";
       })
       .catch((error) => {
-        showSnackbar(`Erro ao fazer logout. ${error.data.message}`, "error");
+        console.log('error', error.response.data);
+        showSnackbar(error.response.data.msg, "error");
       });
   };
   const user = JSON.parse(localStorage.getItem("currentUser") || '{}');
 
   return (
-    <div className={`${styles.topbar} ${isSidebarExpanded ? "" : styles.collapsed}`}>
+    <div className={`${styles.topbar} ${props.isSidebarExpanded ? "" : styles.collapsed}`}>
       <div className={styles.logo}>
         <PiCookingPotBold size={24} color="#FF5733" />
         <span className={styles.logoText}>Cookbook</span>
@@ -51,10 +52,10 @@ export default function Topbar({ isSidebarExpanded }: TopbarProps) {
         {menuOpen && (
           <div className={styles.menuDropdown}>
             <button onClick={openModal} className={styles.menuButton}>
-              <Edit size={16} /> Editar Perfil
+              <Edit size={16} /> Edit profile
             </button>
             <button className={styles.menuButton} onClick={handleLogout}>
-              <LogOut size={16} /> Sair
+              <LogOut size={16} /> Log-out
             </button>
           </div>
         )}

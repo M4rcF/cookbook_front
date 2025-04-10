@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./styles.module.scss";
 import { Button } from "@mui/material";
 
@@ -9,35 +8,30 @@ type MultipleOptionsProps = {
   onChange?: (ingredients: string[]) => void;
 };
 
-export default function MultipleOptions({
-  value = [""],
-  onChange,
-  label,
-  required,
-}: MultipleOptionsProps) {
-  const ingredients = value.length > 0 ? value : [""];
+export default function MultipleOptions(props: MultipleOptionsProps) {
+  const ingredients = props.value && props.value.length > 0 ? props.value : [""];
 
   const addIngredient = () => {
-    onChange?.([...ingredients, ""]);
+    props.onChange?.([...ingredients, ""]);
   };
 
   const removeIngredient = (index: number) => {
     if (ingredients.length > 1) {
       const updated = ingredients.filter((_, i) => i !== index);
-      onChange?.(updated);
+      props.onChange?.(updated);
     }
   };
 
   const handleChange = (index: number, val: string) => {
     const updated = [...ingredients];
     updated[index] = val;
-    onChange?.(updated);
+    props.onChange?.(updated);
   };
 
   return (
     <div className={styles.container}>
       <label>
-        {label} {required && "*"}
+        {props.label} {props.required && "*"}
       </label>
       {ingredients.map((item, index) => (
         <div key={index} className={styles.ingredientRow}>

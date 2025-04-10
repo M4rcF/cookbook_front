@@ -1,11 +1,10 @@
-import React from 'react';
 import styles from './styles.module.scss';
 
 type InputTextProps = {
   label: string;
-  onChange: any;
+  onChange: () => void;
   required?: boolean;
-  value?: any;
+  value?: string;
   maxLength?: number;
 }
 

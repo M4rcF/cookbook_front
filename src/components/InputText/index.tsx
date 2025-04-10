@@ -1,14 +1,13 @@
-import React from 'react';
 import styles from './styles.module.scss';
 
 type InputTextProps = {
   label: string;
-  onChange: any;
+  onChange: () => void;
   type?: string;
   placeholder?: string;
   required?: boolean;
-  value?: any;
-  defaultValue?: any;
+  value?: string;
+  defaultValue?: string;
 }
 
 export default function InputText(props: InputTextProps) {
